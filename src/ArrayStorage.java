@@ -6,7 +6,7 @@ public class ArrayStorage {
     //private Resume[] storage;
     private int mSize;
 
-    // ArrayStorage constructor create array storage of resumes with 10000 elements
+    // ArrayStorage constructor set mSize (number of rezumes in storage) to 0
     public ArrayStorage() {
         mSize = 0;
     }
@@ -27,26 +27,21 @@ public class ArrayStorage {
 
     // Get Resume from storage with specific uuid otherwise if Resume with such uuid doesn't exist in storage return null
     Resume get(String uuid) {
-        // boolean state = true;
-        int count = 0;
-        while (true) {
-            if (storage[count] != null) {
-                if (storage[count].toString() == uuid) return storage[count];
-            } else if (count == mSize) return null;
-
-            count++;
+        for (int i = 0; i < mSize; i++) {
+            if (storage[i].toString() == uuid) {
+                return storage[i];
+            }
         }
+        return null;
     }
 
     // delete Resume by uuid
     void delete(String uuid) {
-        Resume nextResume;
         for (int i = 0; i < mSize; i++) {
             if (uuid == storage[i].toString()) {
                 if (i < mSize - 1) {
                     for (int j = i; j < mSize; j++) {
-                        nextResume = storage[j + 1];
-                        storage[j] = nextResume;
+                        storage[j] = storage[j + 1];
                     }
                     mSize--;
                     break;
