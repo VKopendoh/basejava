@@ -4,30 +4,25 @@
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
     //private Resume[] storage;
-    private int mSize;
-
-    // ArrayStorage constructor set mSize (number of rezumes in storage) to 0
-    public ArrayStorage() {
-        mSize = 0;
-    }
+    private int size;
 
     void clear() {
         // All not null elements in storage set at null and set mSize = 0
-        for (int i = 0; i < mSize; i++) {
+        for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
-        mSize = 0;
+        size = 0;
     }
 
     // save resume to storage becouse we track for mSize where no null elements between elements that store Resume objects
     void save(Resume r) {
-        storage[mSize] = r;
-        mSize++;
+        storage[size] = r;
+        size++;
     }
 
     // Get Resume from storage with specific uuid otherwise if Resume with such uuid doesn't exist in storage return null
     Resume get(String uuid) {
-        for (int i = 0; i < mSize; i++) {
+        for (int i = 0; i < size; i++) {
             if (storage[i].toString() == uuid) {
                 return storage[i];
             }
@@ -37,17 +32,17 @@ public class ArrayStorage {
 
     // delete Resume by uuid
     void delete(String uuid) {
-        for (int i = 0; i < mSize; i++) {
+        for (int i = 0; i < size; i++) {
             if (uuid == storage[i].toString()) {
-                if (i < mSize - 1) {
-                    for (int j = i; j < mSize; j++) {
+                if (i < size - 1) {
+                    for (int j = i; j < size; j++) {
                         storage[j] = storage[j + 1];
                     }
-                    mSize--;
+                    size--;
                     break;
                 } else {
                     storage[i] = null;
-                    mSize--;
+                    size--;
                 }
             }
         }
@@ -57,8 +52,8 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] resumes = new Resume[mSize];
-        for (int i = 0; i < mSize; i++) {
+        Resume[] resumes = new Resume[size];
+        for (int i = 0; i < size; i++) {
             resumes[i] = storage[i];
         }
         return resumes;
@@ -66,6 +61,6 @@ public class ArrayStorage {
 
     // How many Resume objects in storage
     int size() {
-        return mSize;
+        return size;
     }
 }
