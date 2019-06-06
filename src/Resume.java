@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * Initial resume class
  */
@@ -18,15 +20,17 @@ public class Resume {
         return uuid;
     }
 
-    //Overriding method equals to check if fields "uuid" in resumes a same or not.
     @Override
-    public boolean equals(Object obj) {
-        Resume resume = (Resume) obj;
-        if (resume.getUuid() == this.uuid) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Resume)) return false;
+        Resume resume = (Resume) o;
+        return Objects.equals(getUuid(), resume.getUuid());
+    }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getUuid());
     }
 }
