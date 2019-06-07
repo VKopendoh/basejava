@@ -53,7 +53,7 @@ public class MainArray {
                     ARRAY_STORAGE.update(r);
                     printAll();
                     break;
-                 case "exit":
+                case "exit":
                     return;
                 default:
                     System.out.println("Неверная команда.");

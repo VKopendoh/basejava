@@ -4,7 +4,6 @@ import java.util.Objects;
  * Initial resume class
  */
 public class Resume {
-    // Unique identifier
     private String uuid;
 
     public String getUuid() {
@@ -23,14 +22,13 @@ public class Resume {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Resume)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(getUuid(), resume.getUuid());
+        return Objects.equals(uuid, resume.uuid);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getUuid());
+        return Objects.hash(uuid);
     }
 }

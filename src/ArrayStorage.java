@@ -9,19 +9,17 @@ public class ArrayStorage {
 
     private int size;
 
-    // Clear storage
     public void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    // save resume to storage because we track for size where no null elements between elements that store Resume objects
     public void save(Resume resume) {
-        if (size > storage.length) {
+        if (size == storage.length) {
             System.out.println("Error: Can't save, resume with uuid: " + resume.getUuid() + "  array overflow.");
             return;
         }
-        if (isResumeExist(resume.getUuid()) == -1) {
+        if (getIndex(resume.getUuid()) == -1) {
             storage[size] = resume;
             size++;
         } else {
@@ -30,21 +28,19 @@ public class ArrayStorage {
 
     }
 
-    // Get Resume from storage with specific uuid otherwise if Resume with such uuid doesn't exist in storage return null
     public Resume get(String uuid) {
-        int i = isResumeExist(uuid);
-        if (i > -1) {
-            return storage[i];
+        int index = getIndex(uuid);
+        if (index > -1) {
+            return storage[index];
         }
         System.out.println("Error: Can't get, resume with uuid: " + uuid + " not exist.");
         return null;
     }
 
-    // delete Resume by uuid
     public void delete(String uuid) {
-        int i = isResumeExist(uuid);
-        if (i > -1) {
-            storage[i] = storage[size - 1];
+        int index = getIndex(uuid);
+        if (index > -1) {
+            storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
@@ -52,11 +48,10 @@ public class ArrayStorage {
         }
     }
 
-    //Update resume in storage
     public void update(Resume resume) {
-        int i = isResumeExist(resume.getUuid());
-        if (i > -1) {
-            storage[i] = resume;
+        int index = getIndex(resume.getUuid());
+        if (index > -1) {
+            storage[index] = resume;
         } else {
             System.out.println("Error: Can't update, resume with uuid: " + resume.getUuid() + " not exist.");
         }
@@ -69,16 +64,14 @@ public class ArrayStorage {
         return Arrays.copyOf(storage, size);
     }
 
-    // Get how many Resume objects in storage
     public int size() {
         return size;
     }
 
-    // Check if resume exist or not in storage
-    private int isResumeExist(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (uuid.equals(storage[i].getUuid())) {
-                return i;
+    private int getIndex(String uuid) {
+        for (int index = 0; index < size; index++) {
+            if (uuid.equals(storage[index].getUuid())) {
+                return index;
             }
         }
         return -1;
