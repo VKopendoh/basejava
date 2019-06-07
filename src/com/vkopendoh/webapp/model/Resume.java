@@ -1,9 +1,11 @@
+package com.vkopendoh.webapp.model;
+
 import java.util.Objects;
 
 /**
  * Initial resume class
  */
-public class Resume {
+public class Resume implements Comparable<Resume> {
     private String uuid;
 
     public String getUuid() {
@@ -30,5 +32,10 @@ public class Resume {
     @Override
     public int hashCode() {
         return Objects.hash(uuid);
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return uuid.compareTo(o.uuid);
     }
 }

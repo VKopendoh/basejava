@@ -1,33 +1,36 @@
+package com.vkopendoh.webapp.storage;
+
+import com.vkopendoh.webapp.model.Resume;
+
 import java.util.Arrays;
 
-/**
- * Array based storage for Resumes
- */
-public class ArrayStorage {
-    private final int STORAGE_SIZE = 10_000;
-    private Resume[] storage = new Resume[STORAGE_SIZE];
+public abstract class AbstractArrayStorage implements Storage {
+    protected final int STORAGE_SIZE = 10_000;
+    protected Resume[] storage = new Resume[STORAGE_SIZE];
+    protected int size = 0;
 
-    private int size;
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
+    @Override
     public void save(Resume resume) {
         if (size == storage.length) {
             System.out.println("Error: Can't save, resume with uuid: " + resume.getUuid() + "  array overflow.");
             return;
         }
-        if (getIndex(resume.getUuid()) == -1) {
-            storage[size] = resume;
-            size++;
-        } else {
+        int index = getIndex(resume.getUuid());
+        if (index > -1) {
             System.out.println("Error: Can't save, resume with uuid: " + resume.getUuid() + " already exist.");
+            return;
         }
-
+        insert(index, resume);
     }
 
+    @Override
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index > -1) {
@@ -37,17 +40,17 @@ public class ArrayStorage {
         return null;
     }
 
+    @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index > -1) {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        } else {
+        if (index < 0) {
             System.out.println("Error: Can't delete, resume with uuid: " + uuid + " not exist.");
+            return;
         }
+        deleteResume(index);
     }
 
+    @Override
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index > -1) {
@@ -57,6 +60,7 @@ public class ArrayStorage {
         }
     }
 
+    @Override
     /**
      * @return array, contains only Resumes in storage (without null)
      */
@@ -64,17 +68,14 @@ public class ArrayStorage {
         return Arrays.copyOf(storage, size);
     }
 
+    @Override
     public int size() {
         return size;
     }
 
-    private int getIndex(String uuid) {
-        for (int index = 0; index < size; index++) {
-            if (uuid.equals(storage[index].getUuid())) {
-                return index;
-            }
-        }
-        return -1;
-    }
+    protected abstract int getIndex(String uuid);
 
+    protected abstract void insert(int index, Resume resume);
+
+    protected abstract void deleteResume(int index);
 }

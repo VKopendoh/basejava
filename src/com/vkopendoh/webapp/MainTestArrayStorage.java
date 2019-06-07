@@ -1,8 +1,16 @@
+package com.vkopendoh.webapp;
+
+import com.vkopendoh.webapp.model.Resume;
+import com.vkopendoh.webapp.storage.ArrayStorage;
+import com.vkopendoh.webapp.storage.SortedArrayStorage;
+import com.vkopendoh.webapp.storage.Storage;
+
 /**
- * Test for your ArrayStorage implementation
+ * Test for your com.vkopendoh.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final Storage ARRAY_STORAGE = new ArrayStorage();
+    //static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
@@ -14,7 +22,6 @@ public class MainTestArrayStorage {
         Resume r4 = new Resume();
         r4.setUuid("uuid4");
 
-
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
@@ -25,7 +32,7 @@ public class MainTestArrayStorage {
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
         ARRAY_STORAGE.update(r2);
-        System.out.println("Resume r2: " + ARRAY_STORAGE.get(r2.getUuid()) + " updated");
+        System.out.println("com.vkopendoh.webapp.model.Resume r2: " + ARRAY_STORAGE.get(r2.getUuid()) + " updated");
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         printAll();
