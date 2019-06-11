@@ -28,6 +28,7 @@ public abstract class AbstractArrayStorage implements Storage {
             return;
         }
         insert(index, resume);
+        size++;
     }
 
     @Override
@@ -47,7 +48,9 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Error: Can't delete, resume with uuid: " + uuid + " not exist.");
             return;
         }
-        deleteResume(index);
+        remove(index);
+        storage[size - 1] = null;
+        size--;
     }
 
     @Override
@@ -77,5 +80,5 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void insert(int index, Resume resume);
 
-    protected abstract void deleteResume(int index);
+    protected abstract void remove(int index);
 }

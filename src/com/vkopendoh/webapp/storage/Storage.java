@@ -3,20 +3,20 @@ package com.vkopendoh.webapp.storage;
 import com.vkopendoh.webapp.model.Resume;
 
 public interface Storage {
-    public void clear();
+    void clear();
 
-    public void save(Resume resume);
+    void save(Resume resume);
 
-    public Resume get(String uuid);
+    Resume get(String uuid);
 
-    public void delete(String uuid);
+    void delete(String uuid);
 
-    public void update(Resume resume);
+    void update(Resume resume);
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public Resume[] getAll();
+    Resume[] getAll();
 
-    public int size();
+    int size();
 }
