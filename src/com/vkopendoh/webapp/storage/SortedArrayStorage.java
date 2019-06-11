@@ -5,7 +5,7 @@ import com.vkopendoh.webapp.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-    //git
+
     @Override
     protected int getIndex(String uuid) {
         Resume searchKey = new Resume();
