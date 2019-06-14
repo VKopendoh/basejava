@@ -1,5 +1,8 @@
 package com.vkopendoh.webapp.storage;
 
+import com.vkopendoh.webapp.exception.ExistStorageException;
+import com.vkopendoh.webapp.exception.NotExistStorageException;
+import com.vkopendoh.webapp.exception.StorageException;
 import com.vkopendoh.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -19,13 +22,11 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void save(Resume resume) {
         if (size == storage.length) {
-            System.out.println("Error: Can't save, resume with uuid: " + resume.getUuid() + "  array overflow.");
-            return;
+            throw new StorageException("array overflow", resume.getUuid());
         }
         int index = getIndex(resume.getUuid());
         if (index > -1) {
-            System.out.println("Error: Can't save, resume with uuid: " + resume.getUuid() + " already exist.");
-            return;
+            throw  new ExistStorageException(resume.getUuid());
         }
         insert(index, resume);
         size++;
@@ -37,16 +38,14 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index > -1) {
             return storage[index];
         }
-        System.out.println("Error: Can't get, resume with uuid: " + uuid + " not exist.");
-        return null;
+        throw new NotExistStorageException(uuid);
     }
 
     @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("Error: Can't delete, resume with uuid: " + uuid + " not exist.");
-            return;
+            throw new NotExistStorageException(uuid);
         }
         remove(index);
         storage[size - 1] = null;
@@ -59,7 +58,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index > -1) {
             storage[index] = resume;
         } else {
-            System.out.println("Error: Can't update, resume with uuid: " + resume.getUuid() + " not exist.");
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
@@ -81,4 +80,25 @@ public abstract class AbstractArrayStorage implements Storage {
     protected abstract void insert(int index, Resume resume);
 
     protected abstract void remove(int index);
+
+    public static class SortedArrayStorage extends AbstractArrayStorage {
+
+        @Override
+        protected int getIndex(String uuid) {
+            Resume searchKey = new Resume(uuid);
+            return Arrays.binarySearch(storage, 0, size, searchKey);
+        }
+
+        @Override
+        protected void insert(int index, Resume resume) {
+            index = -index - 1;
+            System.arraycopy(storage, index, storage, index + 1, size - index);
+            storage[index] = resume;
+        }
+
+        @Override
+        protected void remove(int index) {
+            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+        }
+    }
 }
