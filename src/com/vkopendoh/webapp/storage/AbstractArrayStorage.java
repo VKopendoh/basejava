@@ -26,7 +26,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
         int index = getIndex(resume.getUuid());
         if (index > -1) {
-            throw  new ExistStorageException(resume.getUuid());
+            throw new ExistStorageException(resume.getUuid());
         }
         insert(index, resume);
         size++;
@@ -81,24 +81,4 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void remove(int index);
 
-    public static class SortedArrayStorage extends AbstractArrayStorage {
-
-        @Override
-        protected int getIndex(String uuid) {
-            Resume searchKey = new Resume(uuid);
-            return Arrays.binarySearch(storage, 0, size, searchKey);
-        }
-
-        @Override
-        protected void insert(int index, Resume resume) {
-            index = -index - 1;
-            System.arraycopy(storage, index, storage, index + 1, size - index);
-            storage[index] = resume;
-        }
-
-        @Override
-        protected void remove(int index) {
-            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
-        }
-    }
 }
