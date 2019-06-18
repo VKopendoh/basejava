@@ -12,7 +12,6 @@ public abstract class AbstractArrayStorage implements Storage {
     protected Resume[] storage = new Resume[STORAGE_SIZE];
     protected int size = 0;
 
-
     @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
