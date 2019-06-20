@@ -7,7 +7,7 @@ import com.vkopendoh.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage implements Storage {
     protected final int STORAGE_SIZE = 10_000;
     protected Resume[] storage = new Resume[STORAGE_SIZE];
     protected int size = 0;
