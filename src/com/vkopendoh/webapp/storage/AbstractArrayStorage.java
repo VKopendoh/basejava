@@ -1,7 +1,5 @@
 package com.vkopendoh.webapp.storage;
 
-import com.vkopendoh.webapp.exception.ExistStorageException;
-import com.vkopendoh.webapp.exception.NotExistStorageException;
 import com.vkopendoh.webapp.exception.StorageException;
 import com.vkopendoh.webapp.model.Resume;
 
@@ -20,45 +18,23 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
 
     @Override
     public void save(Resume resume) {
+        super.save(resume);
         if (size == storage.length) {
             throw new StorageException("array overflow", resume.getUuid());
         }
-        int index = getIndex(resume.getUuid());
-        if (index > -1) {
-            throw new ExistStorageException(resume.getUuid());
-        }
-        insert(index, resume);
         size++;
     }
 
     @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index > -1) {
-            return storage[index];
-        }
-        throw new NotExistStorageException(uuid);
+    protected Resume getByIndex(int resumeExist) {
+        return storage[resumeExist];
     }
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        remove(index);
+        super.delete(uuid);
         storage[size - 1] = null;
         size--;
-    }
-
-    @Override
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index > -1) {
-            storage[index] = resume;
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
     }
 
     @Override
@@ -73,11 +49,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     public int size() {
         return size;
     }
-
-    protected abstract int getIndex(String uuid);
-
-    protected abstract void insert(int index, Resume resume);
-
-    protected abstract void remove(int index);
-
 }
