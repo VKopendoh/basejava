@@ -1,6 +1,7 @@
 package com.vkopendoh.webapp;
 
 import com.vkopendoh.webapp.model.Resume;
+import com.vkopendoh.webapp.storage.ArrayStorage;
 import com.vkopendoh.webapp.storage.ListStorage;
 import com.vkopendoh.webapp.storage.SortedArrayStorage;
 import com.vkopendoh.webapp.storage.Storage;

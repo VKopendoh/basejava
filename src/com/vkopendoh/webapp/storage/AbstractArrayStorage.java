@@ -5,7 +5,7 @@ import com.vkopendoh.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage extends AbstractStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected final int STORAGE_SIZE = 10_000;
     protected Resume[] storage = new Resume[STORAGE_SIZE];
     protected int size = 0;
@@ -17,24 +17,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     }
 
     @Override
-    public void save(Resume resume) {
-        super.save(resume);
-        if (size == storage.length) {
-            throw new StorageException("array overflow", resume.getUuid());
-        }
-        size++;
-    }
-
-    @Override
-    protected Resume getByIndex(int resumeExist) {
-        return storage[resumeExist];
-    }
-
-    @Override
-    public void delete(String uuid) {
-        super.delete(uuid);
-        storage[size - 1] = null;
-        size--;
+    protected Resume getByIndex(int index) {
+        return storage[index];
     }
 
     @Override
@@ -48,5 +32,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     @Override
     public int size() {
         return size;
+    }
+
+    @Override
+    protected void incSize(Resume resume) {
+        if (size == storage.length) {
+            throw new StorageException("array overflow", resume.getUuid());
+        }
+        size++;
+    }
+
+    @Override
+    protected void decSize() {
+        storage[size - 1] = null;
+        size--;
     }
 }
