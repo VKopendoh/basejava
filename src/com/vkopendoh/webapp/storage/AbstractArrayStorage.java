@@ -35,16 +35,17 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void incSize(Resume resume) {
+    protected void add(int index, Resume resume) {
         if (size == storage.length) {
             throw new StorageException("array overflow", resume.getUuid());
         }
+        addToArray(index, resume);
         size++;
     }
 
     @Override
-    protected void decSize() {
-        storage[size - 1] = null;
+    protected void remove(int index) {
+        removeFromArray(index);
         size--;
     }
 
@@ -52,4 +53,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected void set(int index, Resume resume) {
         storage[index] = resume;
     }
+
+    protected abstract void addToArray(int index, Resume resume);
+
+    protected abstract void removeFromArray(int index);
 }
