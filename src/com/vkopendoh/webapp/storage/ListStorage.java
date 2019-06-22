@@ -20,14 +20,18 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void insert(int index, Resume resume) {
-        storage.add(resume);
+        if (index < 0) {
+            storage.add(resume);
+        } else {
+            storage.set(index, resume);
+        }
     }
 
     @Override
     protected int getIndex(String uuid) {
         int index = 0;
-        for(Resume resume:storage){
-            if(resume.getUuid() == uuid){
+        for (Resume resume : storage) {
+            if (resume.getUuid() == uuid) {
                 return index;
             }
             index++;

@@ -5,6 +5,7 @@ import com.vkopendoh.webapp.exception.NotExistStorageException;
 import com.vkopendoh.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
+    protected Storage storage;
 
     @Override
     public void save(Resume resume) {
@@ -32,8 +33,7 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void update(Resume resume) {
         int index = resumeExist(resume.getUuid());
-        Resume resumeToUpdate = getByIndex(index);
-        resumeToUpdate = resume;
+        insert(index, resume);
     }
 
     private int resumeExist(String uuid) {
