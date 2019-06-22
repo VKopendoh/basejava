@@ -19,12 +19,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void insert(int index, Resume resume) {
-        if (index < 0) {
-            storage.add(resume);
-        } else {
-            storage.set(index, resume);
-        }
+    protected void set(int index, Resume resume) {
+        storage.set(index, resume);
+    }
+
+    @Override
+    protected void add(int index, Resume resume) {
+        storage.add(resume);
     }
 
     @Override
@@ -56,11 +57,9 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void incSize(Resume resume) {
-
     }
 
     @Override
     protected void decSize() {
-
     }
 }

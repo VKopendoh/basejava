@@ -47,4 +47,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[size - 1] = null;
         size--;
     }
+
+    @Override
+    protected void set(int index, Resume resume) {
+        storage[index] = resume;
+    }
 }
