@@ -13,8 +13,8 @@ public abstract class AbstractStorage implements Storage {
         if (index > -1) {
             throw new ExistStorageException(resume.getUuid());
         }
-        add(index, resume);
         incSize(resume);
+        add(index, resume);
     }
 
     @Override
