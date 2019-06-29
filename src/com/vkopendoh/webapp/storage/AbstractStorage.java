@@ -19,19 +19,19 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         int index = resumeExist(uuid);
-        return getByIndex(index);
+        return getByIndex(index, uuid);
     }
 
     @Override
     public void delete(String uuid) {
         int index = resumeExist(uuid);
-        remove(index);
+        removeByIndex(index, uuid);
     }
 
     @Override
     public void update(Resume resume) {
         int index = resumeExist(resume.getUuid());
-        set(index, resume);
+        setByIndex(index, resume);
     }
 
     private int resumeExist(String uuid) {
@@ -44,11 +44,11 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void add(int index, Resume resume);
 
-    protected abstract void set(int index, Resume resume);
+    protected abstract void setByIndex(int index, Resume resume);
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract Resume getByIndex(int index);
+    protected abstract Resume getByIndex(int index, String uuid);
 
-    protected abstract void remove(int index);
+    protected abstract void removeByIndex(int index, String uuid);
 }

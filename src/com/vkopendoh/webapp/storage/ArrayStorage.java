@@ -18,7 +18,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected Resume getByIndex(int index) {
+    protected Resume getByIndex(int index, String uuid) {
         return storage[index];
     }
 

@@ -17,7 +17,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getByIndex(int index) {
+    protected Resume getByIndex(int index, String uuid) {
         return storage[index];
     }
 
@@ -44,13 +44,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void remove(int index) {
+    protected void removeByIndex(int index, String uuid) {
         removeFromArray(index);
+        storage[size] = null;
         size--;
     }
 
     @Override
-    protected void set(int index, Resume resume) {
+    protected void setByIndex(int index, Resume resume) {
         storage[index] = resume;
     }
 
