@@ -8,18 +8,13 @@ import com.vkopendoh.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected int getIndex(String uuid) {
+    protected Object getSearchKey(String uuid) {
         for (int index = 0; index < size; index++) {
             if (uuid.equals(storage[index].getUuid())) {
                 return index;
             }
         }
         return -1;
-    }
-
-    @Override
-    protected Resume getByIndex(int index, String uuid) {
-        return storage[index];
     }
 
     @Override

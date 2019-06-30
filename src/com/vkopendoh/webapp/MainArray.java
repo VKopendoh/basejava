@@ -1,7 +1,9 @@
 package com.vkopendoh.webapp;
 
 import com.vkopendoh.webapp.model.Resume;
+import com.vkopendoh.webapp.storage.ArrayStorage;
 import com.vkopendoh.webapp.storage.MapStorage;
+import com.vkopendoh.webapp.storage.SortedArrayStorage;
 import com.vkopendoh.webapp.storage.Storage;
 
 import java.io.BufferedReader;
@@ -14,9 +16,9 @@ import java.io.InputStreamReader;
  */
 public class MainArray {
     //private final static Storage ARRAY_STORAGE = new ArrayStorage();
-    //private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
+    private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
     //private final static Storage ARRAY_STORAGE = new ListStorage();
-    private final static Storage ARRAY_STORAGE = new MapStorage();
+    //private final static Storage ARRAY_STORAGE = new MapStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

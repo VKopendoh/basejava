@@ -14,22 +14,24 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getByIndex(int index, String uuid) {
+    protected Resume doGet(Object searchKey) {
+        int index = (int) searchKey;
         return storage.get(index);
     }
 
     @Override
-    protected void setByIndex(int index, Resume resume) {
+    protected void setByKey(Object searchKey, Resume resume) {
+        int index = (int) searchKey;
         storage.set(index, resume);
     }
 
     @Override
-    protected void add(int index, Resume resume) {
+    protected void add(Object searchKey, Resume resume) {
         storage.add(resume);
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected Object getSearchKey(String uuid) {
         int index = 0;
         for (Resume resume : storage) {
             if (resume.getUuid().equals(uuid)) {
@@ -38,6 +40,15 @@ public class ListStorage extends AbstractStorage {
             index++;
         }
         return -1;
+    }
+
+    @Override
+    protected boolean searchKeyExist(Object searchKey) {
+        int index = (int) searchKey;
+        if (index > -1) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -51,7 +62,9 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void removeByIndex(int index, String uuid) {
+    protected void removeByKey(Object searchKey) {
+        int index = (int) searchKey;
         storage.remove(index);
+
     }
 }

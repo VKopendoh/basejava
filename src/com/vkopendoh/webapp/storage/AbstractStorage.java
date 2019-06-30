@@ -9,46 +9,49 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index > -1) {
+        Object searchKey = getSearchKey(resume.getUuid());
+        if (searchKeyExist(searchKey)) {
             throw new ExistStorageException(resume.getUuid());
         }
-        add(index, resume);
+        add(searchKey, resume);
     }
 
     @Override
     public Resume get(String uuid) {
-        int index = resumeExist(uuid);
-        return getByIndex(index, uuid);
+        Object searchKey = getSearchKey(uuid);
+        if (!searchKeyExist(searchKey)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return doGet(searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        int index = resumeExist(uuid);
-        removeByIndex(index, uuid);
+        Object searchKey = getSearchKey(uuid);
+        if (!searchKeyExist(searchKey)) {
+            throw new NotExistStorageException(uuid);
+        }
+        removeByKey(searchKey);
     }
 
     @Override
     public void update(Resume resume) {
-        int index = resumeExist(resume.getUuid());
-        setByIndex(index, resume);
-    }
-
-    private int resumeExist(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
+        Object searchKey = getSearchKey(resume.getUuid());
+        if (!searchKeyExist(searchKey)) {
+            throw new NotExistStorageException(resume.getUuid());
         }
-        return index;
+        setByKey(searchKey, resume);
     }
 
-    protected abstract void add(int index, Resume resume);
+    protected abstract void add(Object searchKey, Resume resume);
 
-    protected abstract void setByIndex(int index, Resume resume);
+    protected abstract void setByKey(Object searchKey, Resume resume);
 
-    protected abstract int getIndex(String uuid);
+    protected abstract Resume doGet(Object searchKey);
 
-    protected abstract Resume getByIndex(int index, String uuid);
+    protected abstract boolean searchKeyExist(Object searchKey);
 
-    protected abstract void removeByIndex(int index, String uuid);
+    protected abstract Object getSearchKey(String uuid);
+
+    protected abstract void removeByKey(Object searchKey);
 }
