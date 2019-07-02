@@ -2,6 +2,7 @@ package com.vkopendoh.webapp.storage;
 
 import com.vkopendoh.webapp.model.Resume;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,18 +21,15 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected boolean searchKeyExist(Object searchKey) {
-        if (searchKey == null) {
-            return false;
+        if (storage.containsKey(searchKey)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
     protected Object getSearchKey(String uuid) {
-        if (storage.containsKey(uuid)) {
-            return uuid;
-        }
-        return null;
+        return uuid;
     }
 
     @Override
@@ -51,13 +49,8 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        Resume[] resumes = new Resume[storage.size()];
-        int count = 0;
-        for (Map.Entry<String, Resume> resumeEntry : storage.entrySet()) {
-            resumes[count] = resumeEntry.getValue();
-            count++;
-        }
-        return resumes;
+        Collection<Resume> resumeCollection = storage.values();
+        return resumeCollection.toArray(new Resume[0]);
     }
 
     @Override
