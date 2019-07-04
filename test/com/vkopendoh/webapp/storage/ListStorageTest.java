@@ -2,7 +2,7 @@ package com.vkopendoh.webapp.storage;
 
 import com.vkopendoh.webapp.exception.StorageException;
 
-public class ListStorageTest extends AbstractArrayStorageTest {
+public class ListStorageTest extends AbstractStorageTest {
     public ListStorageTest() {
         super(new ListStorage());
     }

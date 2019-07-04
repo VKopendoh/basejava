@@ -3,10 +3,18 @@ package com.vkopendoh.webapp.storage;
 import com.vkopendoh.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
     private List<Resume> storage = new ArrayList<>();
+
+    private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
+        @Override
+        public int compare(Resume o1, Resume o2) {
+            return o1.getUuid().compareTo(o2.getUuid());
+        }
+    };
 
     @Override
     public void clear() {
@@ -17,6 +25,11 @@ public class ListStorage extends AbstractStorage {
     protected Resume doGet(Object searchKey) {
         int index = (int) searchKey;
         return storage.get(index);
+    }
+
+    @Override
+    public List<Resume> getList() {
+        return storage;
     }
 
     @Override
@@ -46,11 +59,6 @@ public class ListStorage extends AbstractStorage {
     protected boolean searchKeyExist(Object searchKey) {
         int index = (int) searchKey;
         return index > -1;
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[0]);
     }
 
     @Override
