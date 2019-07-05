@@ -58,6 +58,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
+    protected String choiceKey(Resume resume) {
+        return resume.getUuid();
+    }
+
+    @Override
     protected void setByKey(Object searchKey, Resume resume) {
         int index = (int) searchKey;
         storage[index] = resume;

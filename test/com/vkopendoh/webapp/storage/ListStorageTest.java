@@ -8,7 +8,7 @@ public class ListStorageTest extends AbstractStorageTest {
     }
 
     @Override
-    public void saveOverlow() throws StorageException {
+    public void saveOverflow() throws StorageException {
         throw new StorageException("Not an error", "ListStorage");
     }
 }

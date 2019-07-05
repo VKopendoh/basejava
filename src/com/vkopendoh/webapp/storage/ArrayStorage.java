@@ -8,9 +8,9 @@ import com.vkopendoh.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Object getSearchKey(String key) {
         for (int index = 0; index < size; index++) {
-            if (uuid.equals(storage[index].getUuid())) {
+            if (key.equals(storage[index].getUuid())) {
                 return index;
             }
         }

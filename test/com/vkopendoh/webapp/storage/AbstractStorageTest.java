@@ -15,11 +15,15 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String DUMMY = "dummy";
+    private static final String FULL_NAME_1 = "uuid1";
+    private static final String FULL_NAME_2 = "uuid2";
+    private static final String FULL_NAME_3 = "uuid3";
+    private static final String FULL_NAME_DUMMY = "dummy";
     private final int STORAGE_SIZE = 10_000;
-    private static final Resume RESUME_1 = new Resume(UUID_1);
-    private static final Resume RESUME_2 = new Resume(UUID_2);
-    private static final Resume RESUME_3 = new Resume(UUID_3);
-    private static final Resume RESUME_DUMMY = new Resume(DUMMY);
+    private static final Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
+    private static final Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
+    private static final Resume RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
+    private static final Resume RESUME_DUMMY = new Resume(DUMMY, FULL_NAME_DUMMY);
     private Storage storage;
 
     protected AbstractStorageTest(Storage storage) {
@@ -58,7 +62,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test(expected = StorageException.class)
-    public void saveOverlow() throws StorageException {
+    public void saveOverflow() throws StorageException {
         storage.clear();
         try {
             while (storage.size() < STORAGE_SIZE) {
@@ -72,8 +76,14 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = new Resume(UUID_1);
+        Resume resume = new Resume(UUID_1, FULL_NAME_1);
         storage.update(resume);
+        String key;
+        if(storage.getClass().getCanonicalName().equalsIgnoreCase("com.vkopendoh.webapp.storage.MapResumeStorageTest")){
+            key = FULL_NAME_1;
+        }else {
+            key = UUID_1;
+        }
         Assert.assertSame(resume, storage.get(UUID_1));
     }
 
@@ -109,7 +119,6 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() {
         List<Resume> resumes = storage.getAllSorted();
-        //Assert.assertArrayEquals(new Resume[]{new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)}, resumes);
         Assert.assertEquals(3, resumes.size());
     }
 }
