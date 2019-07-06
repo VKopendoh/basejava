@@ -15,11 +15,10 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String DUMMY = "dummy";
-    private static final String FULL_NAME_1 = "uuid1";
-    private static final String FULL_NAME_2 = "uuid2";
-    private static final String FULL_NAME_3 = "uuid3";
-    private static final String FULL_NAME_DUMMY = "dummy";
-    private final int STORAGE_SIZE = 10_000;
+    private static final String FULL_NAME_1 = "name1";
+    private static final String FULL_NAME_2 = "name2";
+    private static final String FULL_NAME_3 = "name3";
+    private static final String FULL_NAME_DUMMY = "name_dummy";
     private static final Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
     private static final Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
     private static final Resume RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
@@ -61,29 +60,10 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_1);
     }
 
-    @Test(expected = StorageException.class)
-    public void saveOverflow() throws StorageException {
-        storage.clear();
-        try {
-            while (storage.size() < STORAGE_SIZE) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail(e.getMessage());
-        }
-        storage.save(new Resume());
-    }
-
     @Test
     public void update() {
         Resume resume = new Resume(UUID_1, FULL_NAME_1);
         storage.update(resume);
-        String key;
-        if(storage.getClass().getCanonicalName().equalsIgnoreCase("com.vkopendoh.webapp.storage.MapResumeStorageTest")){
-            key = FULL_NAME_1;
-        }else {
-            key = UUID_1;
-        }
         Assert.assertSame(resume, storage.get(UUID_1));
     }
 

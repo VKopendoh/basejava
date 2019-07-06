@@ -12,7 +12,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected void add(Object searchKey, Resume resume) {
-        storage.put(resume.getFullName(), resume);
+        storage.put(String.valueOf(searchKey), resume);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected String choiceKey(Resume resume) {
-        return resume.getFullName();
+        return resume.getFullName() + resume.getUuid();
     }
 
     @Override

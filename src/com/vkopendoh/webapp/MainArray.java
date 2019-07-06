@@ -17,7 +17,7 @@ public class MainArray {
     //private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
     //private final static Storage ARRAY_STORAGE = new ListStorage();
    // private final static Storage ARRAY_STORAGE = new MapUuidStorage();
-    private final static Storage ARRAY_STORAGE = new MapResumeStorage();
+   private final static Storage ARRAY_STORAGE = new MapResumeStorage();
 
 
     public static void main(String[] args) throws IOException {
@@ -35,6 +35,8 @@ public class MainArray {
             if (params.length == 3) {
                 uuid = params[1].intern();
                 fullName = params[2].intern();
+            }else if(params.length == 2){
+                uuid = params[1].intern();
             }
             switch (params[0]) {
                 case "list":

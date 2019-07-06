@@ -11,26 +11,23 @@ import java.util.List;
 public abstract class AbstractStorage implements Storage {
     protected Storage storage;
 
-    private final static Comparator<Resume> RESUME_COMPARATOR_BY_NAME = (o1, o2) -> o1.getFullName().compareTo(o2.getFullName());
-
-    private static final Comparator<Resume> RESUME_COMPARATOR_BY_UUID = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+    private final static Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> {
+        int compare;
+        compare = o1.getFullName().compareTo(o2.getFullName());
+        if (compare == 0) {
+            compare = o1.getUuid().compareTo(o2.getUuid());
+        }
+        return compare;
+    };
 
     @Override
     public void save(Resume resume) {
-        Object searchKey = getSearchKey(choiceKey(resume));
-        if (searchKeyExist(searchKey)) {
-            throw new ExistStorageException(resume.getUuid());
-        }
-        add(searchKey, resume);
+        add(getSearchKeyNotExisted(resume), resume);
     }
 
     @Override
     public Resume get(String key) {
-        Object searchKey = getSearchKey(key);
-        if (!searchKeyExist(searchKey)) {
-            throw new NotExistStorageException(key);
-        }
-        return doGet(searchKey);
+        return doGet(getSearchKeyExisted(key));
     }
 
     /**
@@ -39,27 +36,34 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> resumeList = getList();
-        Collections.sort(resumeList, RESUME_COMPARATOR_BY_NAME.thenComparing(RESUME_COMPARATOR_BY_UUID));
+        resumeList.sort(RESUME_COMPARATOR);
         return resumeList;
     }
 
-
     @Override
     public void delete(String key) {
-        Object searchKey = getSearchKey(key);
-        if (!searchKeyExist(searchKey)) {
-            throw new NotExistStorageException(key);
-        }
-        removeByKey(searchKey);
+        removeByKey(getSearchKeyExisted(key));
     }
 
     @Override
     public void update(Resume resume) {
+        setByKey(getSearchKeyExisted(choiceKey(resume)), resume);
+    }
+
+    private Object getSearchKeyNotExisted(Resume resume) {
         Object searchKey = getSearchKey(choiceKey(resume));
-        if (!searchKeyExist(searchKey)) {
-            throw new NotExistStorageException(choiceKey(resume));
+        if (searchKeyExist(searchKey)) {
+            throw new ExistStorageException(choiceKey(resume));
         }
-        setByKey(searchKey, resume);
+        return searchKey;
+    }
+
+    private Object getSearchKeyExisted(String key) {
+        Object searchKey = getSearchKey(key);
+        if (!searchKeyExist(searchKey)) {
+            throw new NotExistStorageException(key);
+        }
+        return searchKey;
     }
 
     protected abstract void add(Object searchKey, Resume resume);
