@@ -52,18 +52,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean searchKeyExist(Object searchKey) {
+    protected boolean isExist(Object searchKey) {
         int index = (int) searchKey;
         return index > -1;
     }
 
     @Override
-    protected String choiceKey(Resume resume) {
-        return resume.getUuid();
-    }
-
-    @Override
-    protected void setByKey(Object searchKey, Resume resume) {
+    protected void doUpdate(Object searchKey, Resume resume) {
         int index = (int) searchKey;
         storage[index] = resume;
     }

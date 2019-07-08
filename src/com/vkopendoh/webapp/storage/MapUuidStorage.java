@@ -16,18 +16,13 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected void setByKey(Object searchKey, Resume resume) {
+    protected void doUpdate(Object searchKey, Resume resume) {
         storage.put(String.valueOf(searchKey), resume);
     }
 
     @Override
-    protected boolean searchKeyExist(Object searchKey) {
+    protected boolean isExist(Object searchKey) {
         return storage.containsKey(searchKey);
-    }
-
-    @Override
-    protected String choiceKey(Resume resume) {
-        return resume.getUuid();
     }
 
     @Override

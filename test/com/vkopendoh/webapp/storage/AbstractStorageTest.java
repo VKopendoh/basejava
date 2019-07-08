@@ -2,12 +2,12 @@ package com.vkopendoh.webapp.storage;
 
 import com.vkopendoh.webapp.exception.ExistStorageException;
 import com.vkopendoh.webapp.exception.NotExistStorageException;
-import com.vkopendoh.webapp.exception.StorageException;
 import com.vkopendoh.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
@@ -16,13 +16,10 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = "uuid3";
     private static final String DUMMY = "dummy";
     private static final String FULL_NAME_1 = "name1";
-    private static final String FULL_NAME_2 = "name2";
-    private static final String FULL_NAME_3 = "name3";
-    private static final String FULL_NAME_DUMMY = "name_dummy";
     private static final Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
-    private static final Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
-    private static final Resume RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
-    private static final Resume RESUME_DUMMY = new Resume(DUMMY, FULL_NAME_DUMMY);
+    private static final Resume RESUME_2 = new Resume(UUID_2, "name2");
+    private static final Resume RESUME_3 = new Resume(UUID_3, "name3");
+    private static final Resume RESUME_DUMMY = new Resume(DUMMY, "name_dummy");
     private Storage storage;
 
     protected AbstractStorageTest(Storage storage) {
@@ -99,6 +96,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() {
         List<Resume> resumes = storage.getAllSorted();
+        Assert.assertEquals(resumes, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
         Assert.assertEquals(3, resumes.size());
     }
 }

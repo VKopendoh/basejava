@@ -4,7 +4,6 @@ import com.vkopendoh.webapp.exception.ExistStorageException;
 import com.vkopendoh.webapp.exception.NotExistStorageException;
 import com.vkopendoh.webapp.model.Resume;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,12 +21,12 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        add(getSearchKeyNotExisted(resume), resume);
+        add(getNotExistSearchKey(resume), resume);
     }
 
     @Override
     public Resume get(String key) {
-        return doGet(getSearchKeyExisted(key));
+        return doGet(getExistSearchKey(key));
     }
 
     /**
@@ -41,44 +40,42 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public void delete(String key) {
-        removeByKey(getSearchKeyExisted(key));
+    public void delete(String uuid) {
+        removeByKey(getExistSearchKey(uuid));
     }
 
     @Override
     public void update(Resume resume) {
-        setByKey(getSearchKeyExisted(choiceKey(resume)), resume);
+        doUpdate(getExistSearchKey(resume.getUuid()), resume);
     }
 
-    private Object getSearchKeyNotExisted(Resume resume) {
-        Object searchKey = getSearchKey(choiceKey(resume));
-        if (searchKeyExist(searchKey)) {
-            throw new ExistStorageException(choiceKey(resume));
+    private Object getNotExistSearchKey(Resume resume) {
+        Object searchKey = getSearchKey(resume.getUuid());
+        if (isExist(searchKey)) {
+            throw new ExistStorageException(resume.getUuid());
         }
         return searchKey;
     }
 
-    private Object getSearchKeyExisted(String key) {
-        Object searchKey = getSearchKey(key);
-        if (!searchKeyExist(searchKey)) {
-            throw new NotExistStorageException(key);
+    private Object getExistSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
+            throw new NotExistStorageException(uuid);
         }
         return searchKey;
     }
 
     protected abstract void add(Object searchKey, Resume resume);
 
-    protected abstract void setByKey(Object searchKey, Resume resume);
+    protected abstract void doUpdate(Object searchKey, Resume resume);
 
     protected abstract Resume doGet(Object searchKey);
 
     protected abstract List<Resume> getList();
 
-    protected abstract boolean searchKeyExist(Object searchKey);
+    protected abstract boolean isExist(Object searchKey);
 
-    protected abstract String choiceKey(Resume resume);
-
-    protected abstract Object getSearchKey(String key);
+    protected abstract Object getSearchKey(String uuid);
 
     protected abstract void removeByKey(Object searchKey);
 }

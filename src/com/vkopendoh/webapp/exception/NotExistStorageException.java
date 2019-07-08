@@ -1,7 +1,7 @@
 package com.vkopendoh.webapp.exception;
 
 public class NotExistStorageException extends StorageException {
-    public NotExistStorageException(String uuid) {
-        super("Resume " + uuid + " not exist", uuid);
+    public NotExistStorageException(Object uuid) {
+        super("Resume " + uuid + " not exist", uuid.toString());
     }
 }
