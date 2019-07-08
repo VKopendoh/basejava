@@ -25,8 +25,8 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public Resume get(String key) {
-        return doGet(getExistSearchKey(key));
+    public Resume get(String uuid) {
+        return doGet(getExistSearchKey(uuid));
     }
 
     /**

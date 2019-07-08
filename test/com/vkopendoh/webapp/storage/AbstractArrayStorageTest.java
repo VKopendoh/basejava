@@ -11,7 +11,7 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
     protected AbstractArrayStorageTest(Storage storage) {
         super(storage);
-        this.storage = storage;
+        //this.storage = storage;
     }
 
     @Test(expected = StorageException.class)
