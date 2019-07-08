@@ -6,19 +6,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
-    private final int STORAGE_SIZE = 10_000;
-    private Storage storage;
 
     protected AbstractArrayStorageTest(Storage storage) {
         super(storage);
-        //this.storage = storage;
     }
 
     @Test(expected = StorageException.class)
     public void saveOverflow() throws StorageException {
         storage.clear();
         try {
-            while (storage.size() < STORAGE_SIZE) {
+            while (storage.size() < AbstractArrayStorage.STORAGE_SIZE) {
                 storage.save(new Resume("test"));
             }
         } catch (StorageException e) {

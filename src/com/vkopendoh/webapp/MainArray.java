@@ -15,7 +15,7 @@ import java.util.List;
 public class MainArray {
     //private final static Storage ARRAY_STORAGE = new ArrayStorage();
     //private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
-    //private final static Storage ARRAY_STORAGE = new ListStorage();
+   // private final static Storage ARRAY_STORAGE = new ListStorage();
    // private final static Storage ARRAY_STORAGE = new MapUuidStorage();
    private final static Storage ARRAY_STORAGE = new MapResumeStorage();
 
