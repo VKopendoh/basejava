@@ -5,7 +5,7 @@ import com.vkopendoh.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
     private List<Resume> storage = new ArrayList<>();
 
     @Override
@@ -14,8 +14,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        int index = (int) searchKey;
+    protected Resume doGet(Integer searchKey) {
+        int index = searchKey;
         return storage.get(index);
     }
 
@@ -25,18 +25,18 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Object searchKey, Resume resume) {
-        int index = (int) searchKey;
+    protected void doUpdate(Integer searchKey, Resume resume) {
+        int index = searchKey;
         storage.set(index, resume);
     }
 
     @Override
-    protected void add(Object searchKey, Resume resume) {
+    protected void add(Integer searchKey, Resume resume) {
         storage.add(resume);
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         int index = 0;
         for (Resume resume : storage) {
             if (resume.getUuid().equals(uuid)) {
@@ -44,13 +44,12 @@ public class ListStorage extends AbstractStorage {
             }
             index++;
         }
-        return -1;
+        return null;
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        int index = (int) searchKey;
-        return index > -1;
+    protected boolean isExist(Integer searchKey) {
+        return searchKey != null;
     }
 
     @Override
@@ -59,8 +58,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void removeByKey(Object searchKey) {
-        int index = (int) searchKey;
+    protected void removeByKey(Integer searchKey) {
+        int index = searchKey.intValue();
         storage.remove(index);
 
     }

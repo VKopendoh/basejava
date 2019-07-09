@@ -6,7 +6,7 @@ import com.vkopendoh.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_SIZE = 10_000;
     protected Resume[] storage = new Resume[STORAGE_SIZE];
     protected int size = 0;
@@ -18,8 +18,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        int index = (int) searchKey;
+    protected Resume doGet(Integer searchKey) {
+        int index = searchKey;
         return storage[index];
     }
 
@@ -34,32 +34,31 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void add(Object searchKey, Resume resume) {
+    protected void add(Integer searchKey, Resume resume) {
         if (size == storage.length) {
             throw new StorageException("array overflow", resume.getUuid());
         }
-        int index = (int) searchKey;
+        int index = searchKey;
         addToArray(index, resume);
         size++;
     }
 
     @Override
-    protected void removeByKey(Object searchKey) {
-        int index = (int) searchKey;
+    protected void removeByKey(Integer searchKey) {
+        int index = searchKey;
         removeFromArray(index);
         storage[size] = null;
         size--;
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        int index = (int) searchKey;
-        return index > -1;
+    protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     @Override
-    protected void doUpdate(Object searchKey, Resume resume) {
-        int index = (int) searchKey;
+    protected void doUpdate(Integer searchKey, Resume resume) {
+        int index = searchKey;
         storage[index] = resume;
     }
 
