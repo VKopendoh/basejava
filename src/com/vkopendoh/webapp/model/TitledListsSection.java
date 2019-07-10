@@ -1,19 +1,21 @@
 package com.vkopendoh.webapp.model;
 
+import java.util.List;
 import java.util.Objects;
 
-public class TextSection implements Section<String> {
-    private String content;
+public class TitledListsSection implements Section<List<TitledListField>> {
 
-    public TextSection(String content) {
+    private List<TitledListField> content;
+
+    public TitledListsSection(List<TitledListField> content) {
         this.content = content;
     }
 
-    public String getContent() {
+    public List<TitledListField> getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(List<TitledListField> content) {
         this.content = content;
     }
 
@@ -21,7 +23,7 @@ public class TextSection implements Section<String> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TextSection that = (TextSection) o;
+        TitledListsSection that = (TitledListsSection) o;
         return Objects.equals(content, that.content);
     }
 

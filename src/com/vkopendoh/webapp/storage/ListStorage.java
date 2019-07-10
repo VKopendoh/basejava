@@ -59,7 +59,7 @@ public class ListStorage extends AbstractStorage<Integer> {
 
     @Override
     protected void removeByKey(Integer searchKey) {
-        int index = searchKey.intValue();
+        int index = searchKey;
         storage.remove(index);
 
     }

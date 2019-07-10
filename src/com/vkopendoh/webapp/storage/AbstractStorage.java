@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class AbstractStorage<SK> implements Storage {
     protected Storage storage;
 
-    private final static Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing((Resume resume) -> resume.getFullName()).thenComparing(resume -> resume.getUuid());
+    private final static Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     @Override
     public void save(Resume resume) {
@@ -22,9 +22,6 @@ public abstract class AbstractStorage<SK> implements Storage {
         return doGet(getExistSearchKey(uuid));
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> resumeList = getList();
