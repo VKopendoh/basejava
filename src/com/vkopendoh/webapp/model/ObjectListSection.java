@@ -2,13 +2,11 @@ package com.vkopendoh.webapp.model;
 
 import java.util.List;
 
-public class ObjectListSection implements Section<List<RefDateDescription>>{
-    private SectionType sectionType;
+public class ObjectListSection implements Section<List<RefDateDescription>> {
 
     private List<RefDateDescription> content;
 
-    public ObjectListSection(SectionType sectionType, List<RefDateDescription> content) {
-        this.sectionType = sectionType;
+    public ObjectListSection(List<RefDateDescription> content) {
         this.content = content;
     }
 
