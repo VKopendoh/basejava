@@ -1,5 +1,7 @@
 package com.vkopendoh.webapp.model;
 
+import com.sun.org.apache.xerces.internal.xs.StringList;
+
 import java.util.*;
 
 public class ResumeTestData {
@@ -8,7 +10,7 @@ public class ResumeTestData {
         Map<String, String> contacts = new HashMap<>();
         contacts.put("Тел", "+7(921) 855-0482");
         contacts.put("Почта", "gkislin@yandex.ru");
-        contacts.put("Ссылка 1", "Профиль LinkedIn");
+        contacts.put("Ссылка 5", "Профиль LinkedIn");
         contacts.put("Ссылка 2", "Профиль GitHub");
         contacts.put("Ссылка 3", "Профиль Stackoverflow");
         contacts.put("Ссылка 4", "Домашняя страница");
@@ -121,6 +123,44 @@ public class ResumeTestData {
         ObjectListSection education = new ObjectListSection(SectionType.EDUCATION,educationList);
 
         resume.setContacts(contacts);
+        Map<SectionType,Section> sections = new HashMap<>();
+        sections.put(SectionType.OBJECTIVE,objective);
+        sections.put(SectionType.ACHIEVEMENT, achievment);
+        sections.put(SectionType.EDUCATION,education);
+        sections.put(SectionType.EXPERIENCE,experience);
+        sections.put(SectionType.PERSONAL,personal);
+        sections.put(SectionType.QUALIFICATIONS,qualifications);
+
+        Map<String,String> allContacts = resume.getContacts();
+        for (Map.Entry<String, String> contact: allContacts.entrySet()) {
+            System.out.println(contact.getKey() + " : " + contact.getValue());
+        }
+        System.out.println("\n\n");
+
+        resume.setSections(sections);
+        Map<SectionType,Section> allSections = resume.getSections();
+
+        /*Set<SectionType> st = allSections.keySet();
+        for (SectionType sk:st) {
+            System.out.println(sk.getTitle());
+        }*/
+            for (Map.Entry<SectionType,Section> section: allSections.entrySet()){
+                SectionType sectionType = section.getKey();
+                Section sectionContent = section.getValue();
+                System.out.println(sectionType.getTitle());
+                switch (sectionType){
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        System.out.println(sectionContent.getContent());
+                        break;
+                    case ACHIEVEMENT:
+                        for (String ach:(List<String>)sectionContent.getContent()) {
+                            System.out.println(ach + "\n");
+                        }
+                }
+            }
+
+        /*resume.setContacts(contacts);
         resume.setPersonal(personal);
         resume.setObjective(objective);
         resume.setAchievement(achievment);
@@ -137,7 +177,7 @@ public class ResumeTestData {
         for (String text:resume.getAchievement().getContent()) {
             System.out.println(text + "\n");
         }
-
+*/
 
     }
 }

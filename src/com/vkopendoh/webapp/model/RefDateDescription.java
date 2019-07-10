@@ -30,7 +30,7 @@ public class RefDateDescription {
         this.endDate = endDate;
     }
 
-    public void setDescription(List<String> description) {
+    public void setContent(List<String> description) {
         this.description = description;
     }
 }

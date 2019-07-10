@@ -1,6 +1,6 @@
 package com.vkopendoh.webapp.model;
 
-public class TextSection {
+public class TextSection implements Section<String>{
     private SectionType SectionType;
     private String content;
 
@@ -13,15 +13,17 @@ public class TextSection {
         return SectionType;
     }
 
-    public String getContent() {
-        return content;
-    }
-
     public void setSectionTypee(SectionType SectionType) {
         this.SectionType = SectionType;
     }
 
+    @Override
+    public String getContent() {
+        return content;
+    }
+
+    @Override
     public void setContent(String content) {
-        this.content = content;
+        content = content;
     }
 }

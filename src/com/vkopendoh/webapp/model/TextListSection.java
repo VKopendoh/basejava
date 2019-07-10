@@ -2,7 +2,7 @@ package com.vkopendoh.webapp.model;
 
 import java.util.List;
 
-public class TextListSection {
+public class TextListSection implements Section<List<String>> {
     private SectionType sectionType;
 
     private List<String> content;
@@ -16,15 +16,17 @@ public class TextListSection {
         return sectionType;
     }
 
-    public List<String> getContent() {
-        return content;
-    }
-
     public void setSectionType(SectionType sectionType) {
         this.sectionType = sectionType;
     }
 
+    @Override
+    public List<String> getContent() {
+        return content;
+    }
+
+    @Override
     public void setContent(List<String> content) {
-        this.content = content;
+        content = content;
     }
 }
