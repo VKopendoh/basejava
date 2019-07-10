@@ -3,7 +3,7 @@ package com.vkopendoh.webapp.model;
 import java.time.YearMonth;
 import java.util.Objects;
 
-public class DatesTextField {
+public class Experience {
 
     private YearMonth startDate;
 
@@ -13,7 +13,7 @@ public class DatesTextField {
 
     private String description;
 
-    public DatesTextField(YearMonth startDate, YearMonth endDate, String title, String description) {
+    public Experience(YearMonth startDate, YearMonth endDate, String title, String description) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.title = title;
@@ -56,7 +56,7 @@ public class DatesTextField {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DatesTextField that = (DatesTextField) o;
+        Experience that = (Experience) o;
         return Objects.equals(startDate, that.startDate) &&
                 Objects.equals(endDate, that.endDate) &&
                 Objects.equals(title, that.title) &&

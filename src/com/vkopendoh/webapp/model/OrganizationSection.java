@@ -3,19 +3,19 @@ package com.vkopendoh.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class TitledListsSection implements Section<List<TitledListField>> {
+public class OrganizationSection implements Section<List<Organization>> {
 
-    private List<TitledListField> content;
+    private List<Organization> content;
 
-    public TitledListsSection(List<TitledListField> content) {
+    public OrganizationSection(List<Organization> content) {
         this.content = content;
     }
 
-    public List<TitledListField> getContent() {
+    public List<Organization> getContent() {
         return content;
     }
 
-    public void setContent(List<TitledListField> content) {
+    public void setContent(List<Organization> content) {
         this.content = content;
     }
 
@@ -23,7 +23,7 @@ public class TitledListsSection implements Section<List<TitledListField>> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TitledListsSection that = (TitledListsSection) o;
+        OrganizationSection that = (OrganizationSection) o;
         return Objects.equals(content, that.content);
     }
 
