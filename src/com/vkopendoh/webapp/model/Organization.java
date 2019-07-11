@@ -4,16 +4,17 @@ import java.util.List;
 import java.util.Objects;
 
 public class Organization {
-    private String title;
+    private Link title;
 
     private List<Experience> content;
 
-    public Organization(String title, List<Experience> content) {
-        this.title = title;
+    public Organization(String name, String url, List<Experience> content) {
+        Objects.requireNonNull(content, "list content in Organization must not be null");
+        this.title = new Link(name, url);
         this.content = content;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(Link title) {
         this.title = title;
     }
 
@@ -21,7 +22,7 @@ public class Organization {
         this.content = content;
     }
 
-    public String getTitle() {
+    public Link getTitle() {
         return title;
     }
 
@@ -35,7 +36,7 @@ public class Organization {
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
         return Objects.equals(title, that.title) &&
-                Objects.equals(content, that.content);
+                content.equals(that.content);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.vkopendoh.webapp.model;
 
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -12,15 +13,17 @@ public class Resume implements Comparable<Resume> {
 
     private String fullName;
 
-    private Map<ContactType, String> contacts;
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
-    private Map<SectionType, Section> sections;
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid,"uuid must not be null");
+        Objects.requireNonNull(uuid,"fullName must not be null");
         this.fullName = fullName;
         this.uuid = uuid;
     }
@@ -29,9 +32,13 @@ public class Resume implements Comparable<Resume> {
         return contacts;
     }
 
+    public String getContact(ContactType type){return contacts.get(type);}
+
     public Map<SectionType, Section> getSections() {
         return sections;
     }
+
+    public Section getSection(SectionType type){return sections.get(type);}
 
     public void setSections(Map<SectionType, Section> sections) {
         this.sections = sections;

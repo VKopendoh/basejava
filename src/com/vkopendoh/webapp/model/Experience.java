@@ -14,6 +14,9 @@ public class Experience {
     private String description;
 
     public Experience(YearMonth startDate, YearMonth endDate, String title, String description) {
+        Objects.requireNonNull(startDate, "startDate must not be null");
+        Objects.requireNonNull(endDate, "endDate in Organization must not be null");
+        Objects.requireNonNull(title, "title must not be null");
         this.startDate = startDate;
         this.endDate = endDate;
         this.title = title;
@@ -57,9 +60,9 @@ public class Experience {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Experience that = (Experience) o;
-        return Objects.equals(startDate, that.startDate) &&
-                Objects.equals(endDate, that.endDate) &&
-                Objects.equals(title, that.title) &&
+        return startDate.equals(that.startDate) &&
+                endDate.equals(that.endDate) &&
+                title.equals(that.title) &&
                 Objects.equals(description, that.description);
     }
 

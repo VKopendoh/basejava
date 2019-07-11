@@ -8,6 +8,7 @@ public class OrganizationSection implements Section<List<Organization>> {
     private List<Organization> content;
 
     public OrganizationSection(List<Organization> content) {
+        Objects.requireNonNull(content, "organizations must not be null");
         this.content = content;
     }
 
@@ -24,7 +25,7 @@ public class OrganizationSection implements Section<List<Organization>> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrganizationSection that = (OrganizationSection) o;
-        return Objects.equals(content, that.content);
+        return content.equals(that.content);
     }
 
     @Override

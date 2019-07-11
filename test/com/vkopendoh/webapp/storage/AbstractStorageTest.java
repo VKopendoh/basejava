@@ -1,5 +1,6 @@
 package com.vkopendoh.webapp.storage;
 
+import com.vkopendoh.webapp.ResumeTestData;
 import com.vkopendoh.webapp.exception.ExistStorageException;
 import com.vkopendoh.webapp.exception.NotExistStorageException;
 import com.vkopendoh.webapp.model.Resume;
@@ -16,10 +17,10 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = "uuid3";
     private static final String DUMMY = "dummy";
     private static final String FULL_NAME_1 = "name1";
-    private static final Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
-    private static final Resume RESUME_2 = new Resume(UUID_2, "name2");
-    private static final Resume RESUME_3 = new Resume(UUID_3, "name3");
-    private static final Resume RESUME_DUMMY = new Resume(DUMMY, "name_dummy");
+    private static final Resume RESUME_1 = ResumeTestData.createResume(UUID_1, FULL_NAME_1);
+    private static final Resume RESUME_2 = ResumeTestData.createResume(UUID_2, "name2");
+    private static final Resume RESUME_3 = ResumeTestData.createResume(UUID_3, "name3");
+    private static final Resume RESUME_DUMMY = ResumeTestData.createResume(DUMMY, "name_dummy");
     protected Storage storage;
 
     protected AbstractStorageTest(Storage storage) {

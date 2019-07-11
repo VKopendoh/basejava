@@ -8,6 +8,7 @@ public class TextListSection implements Section<List<String>> {
     private List<String> content;
 
     public TextListSection(List<String> content) {
+        Objects.requireNonNull(content, "textList must not be null");
         this.content = content;
     }
 
@@ -24,7 +25,7 @@ public class TextListSection implements Section<List<String>> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TextListSection that = (TextListSection) o;
-        return Objects.equals(content, that.content);
+        return content.equals(that.content);
     }
 
     @Override

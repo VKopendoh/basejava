@@ -6,6 +6,7 @@ public class TextSection implements Section<String> {
     private String content;
 
     public TextSection(String content) {
+        Objects.requireNonNull(content, "text must not be null");
         this.content = content;
     }
 
@@ -22,7 +23,7 @@ public class TextSection implements Section<String> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TextSection that = (TextSection) o;
-        return Objects.equals(content, that.content);
+        return content.equals(that.content);
     }
 
     @Override
