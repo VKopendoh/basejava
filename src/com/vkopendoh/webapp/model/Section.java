@@ -1,4 +1,6 @@
 package com.vkopendoh.webapp.model;
 
-public interface Section<C> {
+import java.io.Serializable;
+
+public abstract class Section<C> implements Serializable {
 }

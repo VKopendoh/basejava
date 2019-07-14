@@ -1,13 +1,16 @@
 package com.vkopendoh.webapp.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Link {
+public class Link implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final String name;
     private final String url;
 
     public Link(String name, String url) {
-        Objects.requireNonNull(name,"name must be not null");
+        Objects.requireNonNull(name, "name must be not null");
         this.name = name;
         this.url = url;
     }
@@ -18,6 +21,11 @@ public class Link {
 
     public String getUrl() {
         return url;
+    }
+
+    @Override
+    public String toString() {
+        return "Link(" + name + ',' + url + ')';
     }
 
     @Override

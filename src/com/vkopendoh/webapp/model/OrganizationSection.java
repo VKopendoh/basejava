@@ -3,7 +3,8 @@ package com.vkopendoh.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class OrganizationSection implements Section<List<Organization>> {
+public class OrganizationSection extends Section<List<Organization>> {
+    private static final long serialVersionUID = 1L;
 
     private List<Organization> content;
 

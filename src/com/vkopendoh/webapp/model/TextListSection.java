@@ -3,7 +3,8 @@ package com.vkopendoh.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class TextListSection implements Section<List<String>> {
+public class TextListSection extends Section<List<String>> {
+    private static final long serialVersionUID = 1L;
 
     private List<String> content;
 

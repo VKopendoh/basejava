@@ -2,7 +2,9 @@ package com.vkopendoh.webapp.model;
 
 import java.util.Objects;
 
-public class TextSection implements Section<String> {
+public class TextSection extends Section<String> {
+    private static final long serialVersionUID = 1L;
+
     private String content;
 
     public TextSection(String content) {
