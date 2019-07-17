@@ -4,8 +4,6 @@ import com.vkopendoh.webapp.exception.StorageException;
 import com.vkopendoh.webapp.model.Resume;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,16 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
+    private SerializationStrategy strategy;
 
-    protected AbstractPathStorage(String dir) {
+    protected PathStorage(String dir, SerializationStrategy strategy) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
         this.directory = directory;
+        this.strategy = strategy;
     }
 
     @Override
@@ -38,7 +38,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Path path, Resume resume) {
         try {
-            doWrite(resume, Files.newOutputStream(path));
+            strategy.doWrite(resume, Files.newOutputStream(path));
         } catch (IOException e) {
             throw new StorageException("Can't update file", path.getFileName().toString(), e);
         }
@@ -47,7 +47,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return doRead(Files.newInputStream(path));
+            return strategy.doRead(Files.newInputStream(path));
         } catch (IOException e) {
             throw new StorageException("Can't get file", path.getFileName().toString(), e);
         }
@@ -59,7 +59,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         try {
             Files.list(directory).forEach(path -> {
                 try {
-                    resumes.add(doRead(Files.newInputStream(path)));
+                    resumes.add(strategy.doRead(Files.newInputStream(path)));
                 } catch (IOException e) {
                     throw new StorageException("IO error", path.getFileName().toString(), e);
                 }
@@ -102,8 +102,4 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     public int size() {
         return getList().size();
     }
-
-    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-
-    protected abstract Resume doRead(InputStream is) throws IOException;
 }

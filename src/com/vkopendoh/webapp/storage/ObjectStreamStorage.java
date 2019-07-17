@@ -5,11 +5,7 @@ import com.vkopendoh.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage extends AbstractFileStorage implements SerializationStrategy {
-
-    protected ObjectStreamStorage(String directory) {
-        super(directory);
-    }
+public class ObjectStreamStorage implements SerializationStrategy {
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
