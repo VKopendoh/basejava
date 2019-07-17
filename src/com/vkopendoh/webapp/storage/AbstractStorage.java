@@ -73,4 +73,5 @@ public abstract class AbstractStorage<SK> implements Storage {
     protected abstract SK getSearchKey(String uuid);
 
     protected abstract void removeByKey(SK searchKey);
+    //Correction
 }
