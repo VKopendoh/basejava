@@ -4,6 +4,7 @@ import com.vkopendoh.webapp.exception.ExistStorageException;
 import com.vkopendoh.webapp.exception.NotExistStorageException;
 import com.vkopendoh.webapp.model.Resume;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -35,8 +36,12 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public void update(Resume resume) {
-        doUpdate(getExistSearchKey(resume.getUuid()), resume);
+    public void update(Resume resume)  {
+        try {
+            doUpdate(getExistSearchKey(resume.getUuid()), resume);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private SK getNotExistSearchKey(Resume resume) {
@@ -57,7 +62,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void add(SK searchKey, Resume resume);
 
-    protected abstract void doUpdate(SK searchKey, Resume resume);
+    protected abstract void doUpdate(SK searchKey, Resume resume) throws IOException;
 
     protected abstract Resume doGet(SK searchKey);
 

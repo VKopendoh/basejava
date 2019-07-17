@@ -11,7 +11,8 @@ import java.util.Objects;
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
 
-    protected AbstractFileStorage(File directory) {
+    protected AbstractFileStorage(String dir) {
+        File directory = new File(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -26,11 +27,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void add(File file, Resume resume) {
         try {
             file.createNewFile();
-           // doWrite(resume,new BufferedOutputStream(new FileOutputStream(file)));
+            // doWrite(resume,new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Can't create file", file.getName(), e);
         }
-        doUpdate(file,resume);
+        doUpdate(file, resume);
     }
 
     @Override
@@ -44,10 +45,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) {
-        try{
+        try {
             return doRead(new BufferedInputStream(new FileInputStream(file)));
-        }catch (IOException e){
-            throw new StorageException("IO error", file.getName(),e);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
         }
     }
 
@@ -58,7 +59,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             try {
                 resumes.add(doRead(new BufferedInputStream(new FileInputStream(file))));
             } catch (IOException e) {
-                throw new StorageException("IO error",file.getName(),e);
+                throw new StorageException("IO error", file.getName(), e);
             }
         }
         return resumes;
@@ -76,17 +77,17 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void removeByKey(File file) {
-        try{
+        try {
             file.delete();
-        }catch (Exception e){
-            throw new StorageException("Can't delete",file.getName(), e);
+        } catch (Exception e) {
+            throw new StorageException("Can't delete", file.getName(), e);
         }
     }
 
     @Override
     public void clear() {
         for (File name : Objects.requireNonNull(directory.listFiles())) {
-            name.delete();
+            removeByKey(name);
         }
     }
 
