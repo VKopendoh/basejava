@@ -2,6 +2,7 @@ package com.vkopendoh.webapp.storage;
 
 import com.vkopendoh.webapp.exception.StorageException;
 import com.vkopendoh.webapp.model.Resume;
+import com.vkopendoh.webapp.storage.serializer.SerializationStrategy;
 
 import java.io.*;
 import java.util.ArrayList;

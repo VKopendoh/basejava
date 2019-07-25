@@ -1,7 +1,11 @@
 package com.vkopendoh.webapp.model;
 
 import com.vkopendoh.webapp.util.DateUtil;
+import com.vkopendoh.webapp.util.YearMonthAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.Month;
 import java.time.YearMonth;
@@ -10,12 +14,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final Link homePage;
+    private Link homePage;
 
     private List<Experience> experiences = new ArrayList<>();
+
+    public Organization() {
+    }
 
     public Organization(String name, String url, Experience... experiences) {
         this(new Link(name, url), Arrays.asList(experiences));
@@ -28,6 +36,22 @@ public class Organization implements Serializable {
 
     public void setContent(List<Experience> content) {
         this.experiences = content;
+    }
+
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<Experience> getExperiences() {
+        return experiences;
+    }
+
+    public void setHomePage(Link homePage) {
+        this.homePage = homePage;
+    }
+
+    public void setExperiences(List<Experience> experiences) {
+        this.experiences = experiences;
     }
 
     @Override
@@ -44,16 +68,22 @@ public class Organization implements Serializable {
         return Objects.hash(homePage, experiences);
     }
 
-    public static class Experience implements  Serializable{
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class Experience implements Serializable {
         private static final long serialVersionUID = 1L;
 
+        @XmlJavaTypeAdapter(YearMonthAdapter.class)
         private YearMonth startDate;
 
+        @XmlJavaTypeAdapter(YearMonthAdapter.class)
         private YearMonth endDate;
 
         private String title;
 
         private String description;
+
+        public Experience() {
+        }
 
         public Experience(YearMonth startDate, YearMonth endDate, String title, String description) {
             Objects.requireNonNull(startDate, "startDate must not be null");

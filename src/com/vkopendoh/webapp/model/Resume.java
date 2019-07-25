@@ -1,5 +1,8 @@
 package com.vkopendoh.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
@@ -9,6 +12,8 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -19,6 +24,9 @@ public class Resume implements Comparable<Resume>, Serializable {
     private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
     private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+
+    public Resume() {
+    }
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -81,16 +89,28 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid);
+        return Objects.equals(uuid, resume.uuid) &&
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contacts, resume.contacts) &&
+                Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 
     @Override
     public int compareTo(Resume o) {
         return uuid.compareTo(o.uuid);
+    }
+
+    public void addContact(ContactType contactType, String value) {
+        contacts.put(contactType,value);
+    }
+
+    public void addSection(SectionType sectionType, Section section) {
+        sections.put(sectionType,section);
     }
 }

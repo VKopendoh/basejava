@@ -2,6 +2,7 @@ package com.vkopendoh.webapp.storage;
 
 import com.vkopendoh.webapp.exception.StorageException;
 import com.vkopendoh.webapp.model.Resume;
+import com.vkopendoh.webapp.storage.serializer.SerializationStrategy;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +22,6 @@ public class PathStorage extends AbstractStorage<Path> {
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
-        this.directory = directory;
         this.strategy = strategy;
     }
 

@@ -8,11 +8,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-    protected static final String STORAGE_DIR = "C:\\Users\\Vladimir\\basejava\\storage";
+    protected static final String STORAGE_DIR = "storage";
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -99,7 +100,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() {
         List<Resume> resumes = storage.getAllSorted();
-        Assert.assertEquals(Arrays.asList(RESUME_1, RESUME_2, RESUME_3), resumes);
+        Assert.assertEquals( new ArrayList<Resume>(Arrays.asList(RESUME_1, RESUME_2, RESUME_3)), resumes);
         Assert.assertEquals(3, resumes.size());
     }
 }

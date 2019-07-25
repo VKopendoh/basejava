@@ -1,11 +1,12 @@
-package com.vkopendoh.webapp.storage;
+package com.vkopendoh.webapp.storage.serializer;
 
 import com.vkopendoh.webapp.exception.StorageException;
 import com.vkopendoh.webapp.model.Resume;
+import com.vkopendoh.webapp.storage.serializer.SerializationStrategy;
 
 import java.io.*;
 
-public class ObjectStreamStorage implements SerializationStrategy {
+public class ObjectStreamSerializer implements SerializationStrategy {
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {

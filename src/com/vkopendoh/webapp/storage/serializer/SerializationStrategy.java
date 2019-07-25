@@ -1,4 +1,4 @@
-package com.vkopendoh.webapp.storage;
+package com.vkopendoh.webapp.storage.serializer;
 
 import com.vkopendoh.webapp.model.Resume;
 
