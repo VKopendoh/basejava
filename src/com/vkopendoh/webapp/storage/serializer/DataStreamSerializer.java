@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerializer implements SerializationStrategy {
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/yyyy");
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/yyyy");
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
@@ -75,7 +75,6 @@ public class DataStreamSerializer implements SerializationStrategy {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
             size = dis.readInt();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
             for (int i = 0; i < size; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
