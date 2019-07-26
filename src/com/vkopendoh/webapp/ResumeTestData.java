@@ -114,7 +114,7 @@ public class ResumeTestData {
 
 
         Organization edu1 = new Organization("Coursera", "",
-                new Organization.Experience(YearMonth.parse("03/2013", formatter), YearMonth.parse("05/2013", formatter), "\"Functional Programming Principles in Scala\" by Martin Odersky\"", ""));
+                new Organization.Experience(YearMonth.parse("03/2013", formatter), YearMonth.parse("05/2013", formatter), "\"Functional Programming Principles in Scala\" by Martin Odersky\"", null));
 
         Organization edu2 = new Organization("Luxoft", "",
                 new Organization.Experience(YearMonth.parse("03/2011", formatter), YearMonth.parse("04/2011", formatter), "\"Курс \\\"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\\\"\"", ""));

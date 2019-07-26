@@ -5,11 +5,9 @@ import com.vkopendoh.webapp.model.*;
 import java.io.*;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class DataStreamSerializer implements SerializationStrategy {
+public class DataStreamSerializer<T> implements SerializationStrategy,WriterIOException {
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/yyyy");
 
     @Override
@@ -19,7 +17,8 @@ public class DataStreamSerializer implements SerializationStrategy {
             dos.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
             dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+
+             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
@@ -39,25 +38,24 @@ public class DataStreamSerializer implements SerializationStrategy {
                         TextListSection section = (TextListSection) entry.getValue();
                         List<String> content = section.getContent();
                         dos.writeInt(content.size());
-                        for (String text : content) {
-                            dos.writeUTF(text);
-                        }
+                        writeWithException(content, dos, (ConsumerWithException<String>) dos::writeUTF);
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
                         OrganizationSection orgSection = (OrganizationSection) entry.getValue();
                         List<Organization> contentOrg = orgSection.getContent();
                         dos.writeInt(contentOrg.size());
+
                         for (Organization org : contentOrg) {
                             dos.writeUTF(org.getHomePage().getName());
-                            dos.writeUTF(org.getHomePage().getUrl());
+                            dos.writeUTF(nullWriter(org.getHomePage().getUrl()));
                             List<Organization.Experience> experiences = org.getExperiences();
                             dos.writeInt(experiences.size());
                             for (Organization.Experience exp : experiences) {
                                 dos.writeUTF(exp.getStartDate().format(dtf));
                                 dos.writeUTF(exp.getEndDate().format(dtf));
                                 dos.writeUTF(exp.getTitle());
-                                dos.writeUTF(exp.getDescription());
+                                dos.writeUTF(nullWriter(exp.getDescription()));
                             }
                         }
                         break;
@@ -96,13 +94,13 @@ public class DataStreamSerializer implements SerializationStrategy {
                         int sizeOls = dis.readInt();
                         List<Organization> organizations = new ArrayList<>();
                         for (int j = 0; j < sizeOls; j++) {
-                            Link homePage = new Link(dis.readUTF(), dis.readUTF());
+                            Link homePage = new Link(dis.readUTF(), nullReader(dis.readUTF()));
                             int sizeExp = dis.readInt();
                             List<Organization.Experience> experiences = new ArrayList<>();
                             for (int k = 0; k < sizeExp; k++) {
                                 experiences.add(new Organization.Experience(YearMonth.parse(dis.readUTF(), dtf)
                                         , YearMonth.parse(dis.readUTF(), dtf)
-                                        , dis.readUTF(), dis.readUTF()));
+                                        , dis.readUTF(), nullReader(dis.readUTF())));
                             }
                             organizations.add(new Organization(homePage, experiences));
                         }
@@ -112,6 +110,15 @@ public class DataStreamSerializer implements SerializationStrategy {
             }
             return resume;
         }
-
     }
+
+    private String nullWriter(String str) {
+        return str == null ? "null" : str;
+    }
+
+    private String nullReader(String str) {
+        return str.equals("null") ? null : str;
+    }
+
+
 }
