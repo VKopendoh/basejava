@@ -62,7 +62,7 @@ public class DataStreamSerializer implements SerializationStrategy {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
             readWithException(dis, o -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
-            readWithException(dis, (ConsumerWithException<Section>) section -> {
+            readWithException(dis, section -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
@@ -71,17 +71,14 @@ public class DataStreamSerializer implements SerializationStrategy {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        int sizeTls = dis.readInt();
                         List<String> content = new ArrayList<>();
-                        for (int j = 0; j < sizeTls; j++) {
-                            content.add(dis.readUTF());
-                        }
+                        readWithException(dis, s -> content.add(dis.readUTF()));
                         resume.addSection(sectionType, new TextListSection(content));
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
                         List<Organization> organizations = new ArrayList<>();
-                        readWithException(dis, (ConsumerWithException<Organization>) organization -> {
+                        readWithException(dis, organization -> {
                             Link homePage = new Link(dis.readUTF(), nullReader(dis.readUTF()));
                             List<Organization.Experience> experiences = new ArrayList<>();
                             readWithException(dis, o -> experiences.add(new Organization.Experience(YearMonth.parse(dis.readUTF(), dtf)
@@ -113,7 +110,7 @@ public class DataStreamSerializer implements SerializationStrategy {
         }
     }
 
-    private <T> void readWithException(DataInputStream dis, ConsumerWithException<T> action) throws IOException {
+    private void readWithException(DataInputStream dis, ConsumerWithException action) throws IOException {
         int size = dis.readInt();
         Objects.requireNonNull(action);
         for (int i = 0; i < size; i++) {
