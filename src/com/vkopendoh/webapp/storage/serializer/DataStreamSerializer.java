@@ -5,9 +5,11 @@ import com.vkopendoh.webapp.model.*;
 import java.io.*;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class DataStreamSerializer<T> implements SerializationStrategy,WriterIOException {
+public class DataStreamSerializer<T> implements SerializationStrategy, WriterIOException {
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/yyyy");
 
     @Override
@@ -17,14 +19,13 @@ public class DataStreamSerializer<T> implements SerializationStrategy,WriterIOEx
             dos.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
             dos.writeInt(contacts.size());
-
-             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            writeWithException(contacts.entrySet(), dos, (ConsumerWithException<Map.Entry<ContactType, String>>) entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
             Map<SectionType, Section> sections = resume.getSections();
             dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+            writeWithException(sections.entrySet(), dos, (ConsumerWithException<Map.Entry<SectionType, Section>>) entry -> {
                 SectionType sectionType = entry.getKey();
                 dos.writeUTF(sectionType.name());
                 switch (sectionType) {
@@ -46,21 +47,21 @@ public class DataStreamSerializer<T> implements SerializationStrategy,WriterIOEx
                         List<Organization> contentOrg = orgSection.getContent();
                         dos.writeInt(contentOrg.size());
 
-                        for (Organization org : contentOrg) {
+                        writeWithException(contentOrg, dos, (ConsumerWithException<Organization>) org -> {
                             dos.writeUTF(org.getHomePage().getName());
                             dos.writeUTF(nullWriter(org.getHomePage().getUrl()));
                             List<Organization.Experience> experiences = org.getExperiences();
                             dos.writeInt(experiences.size());
-                            for (Organization.Experience exp : experiences) {
+                            writeWithException(experiences, dos, (ConsumerWithException<Organization.Experience>) exp -> {
                                 dos.writeUTF(exp.getStartDate().format(dtf));
                                 dos.writeUTF(exp.getEndDate().format(dtf));
                                 dos.writeUTF(exp.getTitle());
                                 dos.writeUTF(nullWriter(exp.getDescription()));
-                            }
-                        }
+                            });
+                        });
                         break;
                 }
-            }
+            });
         }
     }
 
@@ -119,6 +120,4 @@ public class DataStreamSerializer<T> implements SerializationStrategy,WriterIOEx
     private String nullReader(String str) {
         return str.equals("null") ? null : str;
     }
-
-
 }
