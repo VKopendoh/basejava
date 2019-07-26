@@ -61,12 +61,8 @@ public class DataStreamSerializer implements SerializationStrategy {
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+            readWithException(dis, o -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readWithException(dis, (ConsumerWithException<Section>) section -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
@@ -84,23 +80,19 @@ public class DataStreamSerializer implements SerializationStrategy {
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        int sizeOls = dis.readInt();
                         List<Organization> organizations = new ArrayList<>();
-                        for (int j = 0; j < sizeOls; j++) {
+                        readWithException(dis, (ConsumerWithException<Organization>) organization -> {
                             Link homePage = new Link(dis.readUTF(), nullReader(dis.readUTF()));
-                            int sizeExp = dis.readInt();
                             List<Organization.Experience> experiences = new ArrayList<>();
-                            for (int k = 0; k < sizeExp; k++) {
-                                experiences.add(new Organization.Experience(YearMonth.parse(dis.readUTF(), dtf)
-                                        , YearMonth.parse(dis.readUTF(), dtf)
-                                        , dis.readUTF(), nullReader(dis.readUTF())));
-                            }
+                            readWithException(dis, o -> experiences.add(new Organization.Experience(YearMonth.parse(dis.readUTF(), dtf)
+                                    , YearMonth.parse(dis.readUTF(), dtf)
+                                    , dis.readUTF(), nullReader(dis.readUTF()))));
                             organizations.add(new Organization(homePage, experiences));
-                        }
+                        });
                         resume.addSection(sectionType, new OrganizationSection(organizations));
                         break;
                 }
-            }
+            });
             return resume;
         }
     }
@@ -118,6 +110,14 @@ public class DataStreamSerializer implements SerializationStrategy {
         Objects.requireNonNull(action);
         for (T t : collection) {
             action.accept(t);
+        }
+    }
+
+    private <T> void readWithException(DataInputStream dis, ConsumerWithException<T> action) throws IOException {
+        int size = dis.readInt();
+        Objects.requireNonNull(action);
+        for (int i = 0; i < size; i++) {
+            action.accept(null);
         }
     }
 }
