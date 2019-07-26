@@ -98,11 +98,11 @@ public class DataStreamSerializer implements SerializationStrategy {
     }
 
     private String nullWriter(String str) {
-        return str == null ? "\n" : str;
+        return str == null ? "" : str;
     }
 
     private String nullReader(String str) {
-        return str.equals("\n") ? null : str;
+        return str.equals("") ? null : str;
     }
 
     private <T> void writeWithException(Collection<T> collection, DataOutputStream dos, ConsumerWithException<T> action) throws IOException {
