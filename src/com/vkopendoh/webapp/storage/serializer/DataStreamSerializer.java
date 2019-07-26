@@ -5,11 +5,9 @@ import com.vkopendoh.webapp.model.*;
 import java.io.*;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class DataStreamSerializer implements SerializationStrategy, WriterIOException {
+public class DataStreamSerializer implements SerializationStrategy {
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/yyyy");
 
     @Override
@@ -18,14 +16,12 @@ public class DataStreamSerializer implements SerializationStrategy, WriterIOExce
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            dos.writeInt(contacts.size());
-            writeWithException(contacts.entrySet(), dos, (ConsumerWithException<Map.Entry<ContactType, String>>) entry -> {
+            writeWithException(contacts.entrySet(), dos, entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             });
             Map<SectionType, Section> sections = resume.getSections();
-            dos.writeInt(sections.size());
-            writeWithException(sections.entrySet(), dos, (ConsumerWithException<Map.Entry<SectionType, Section>>) entry -> {
+            writeWithException(sections.entrySet(), dos, entry -> {
                 SectionType sectionType = entry.getKey();
                 dos.writeUTF(sectionType.name());
                 switch (sectionType) {
@@ -38,21 +34,17 @@ public class DataStreamSerializer implements SerializationStrategy, WriterIOExce
                     case QUALIFICATIONS:
                         TextListSection section = (TextListSection) entry.getValue();
                         List<String> content = section.getContent();
-                        dos.writeInt(content.size());
-                        writeWithException(content, dos, (ConsumerWithException<String>) dos::writeUTF);
+                        writeWithException(content, dos, dos::writeUTF);
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
                         OrganizationSection orgSection = (OrganizationSection) entry.getValue();
                         List<Organization> contentOrg = orgSection.getContent();
-                        dos.writeInt(contentOrg.size());
-
-                        writeWithException(contentOrg, dos, (ConsumerWithException<Organization>) org -> {
+                        writeWithException(contentOrg, dos, org -> {
                             dos.writeUTF(org.getHomePage().getName());
                             dos.writeUTF(nullWriter(org.getHomePage().getUrl()));
                             List<Organization.Experience> experiences = org.getExperiences();
-                            dos.writeInt(experiences.size());
-                            writeWithException(experiences, dos, (ConsumerWithException<Organization.Experience>) exp -> {
+                            writeWithException(experiences, dos, exp -> {
                                 dos.writeUTF(exp.getStartDate().format(dtf));
                                 dos.writeUTF(exp.getEndDate().format(dtf));
                                 dos.writeUTF(exp.getTitle());
@@ -114,10 +106,18 @@ public class DataStreamSerializer implements SerializationStrategy, WriterIOExce
     }
 
     private String nullWriter(String str) {
-        return str == null ? "null" : str;
+        return str == null ? "\n" : str;
     }
 
     private String nullReader(String str) {
-        return str.equals("null") ? null : str;
+        return str.equals("\n") ? null : str;
+    }
+
+    private <T> void writeWithException(Collection<T> collection, DataOutputStream dos, ConsumerWithException<T> action) throws IOException {
+        dos.writeInt(collection.size());
+        Objects.requireNonNull(action);
+        for (T t : collection) {
+            action.accept(t);
+        }
     }
 }
