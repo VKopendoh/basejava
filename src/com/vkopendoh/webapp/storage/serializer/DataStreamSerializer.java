@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DataStreamSerializer<T> implements SerializationStrategy, WriterIOException {
+public class DataStreamSerializer implements SerializationStrategy, WriterIOException {
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/yyyy");
 
     @Override
