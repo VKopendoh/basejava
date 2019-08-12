@@ -45,7 +45,7 @@ public class ResumeTestData {
 
     public static Resume createResume(String uuid, String name) {
         Resume resume = new Resume(uuid, name);
-        Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+       /* Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
         contacts.put(ContactType.PHONE, "+7(921) 855-0482");
         contacts.put(ContactType.SKYPE, "grigory.kislin");
         contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
@@ -149,7 +149,7 @@ public class ResumeTestData {
         sections.put(SectionType.EXPERIENCE, experience);
         sections.put(SectionType.PERSONAL, personal);
         sections.put(SectionType.QUALIFICATIONS, qualifications);
-        resume.setSections(sections);
+        resume.setSections(sections);*/
         return resume;
     }
 

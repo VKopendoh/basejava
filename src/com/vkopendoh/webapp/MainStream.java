@@ -7,7 +7,7 @@ public class MainStream {
     public static void main(String[] args) {
         int[] arr1 = {1, 2, 3, 3, 2, 3};
         int[] arr2 = {9, 8};
-        int[] arr3 = {1};
+        int[] arr3 = {0};
 
         System.out.println("Min values: ");
         System.out.println(minValue(arr1));
@@ -15,7 +15,7 @@ public class MainStream {
         System.out.println(minValue(arr3));
 
         System.out.println("Odd or even: ");
-        List<Integer> iList = Arrays.asList(2, 3, 4, 1, 5, 8, 7, 1, 2,1,7,3);
+        List<Integer> iList = Arrays.asList(2, 3, 4, 1, 5, 8, 7, 1, 2, 1, 7, 3);
         oddOrEven(iList).forEach(System.out::println);
     }
 
@@ -34,6 +34,6 @@ public class MainStream {
     }
 
     private static int minValue(int[] intArr) {
-        return Arrays.stream(intArr).distinct().sorted().reduce((x, y) -> x * 10 + y).getAsInt();
+        return intArr.length > 0 ? Arrays.stream(intArr).distinct().sorted().reduce((x, y) -> x * 10 + y).getAsInt() : 0;
     }
 }

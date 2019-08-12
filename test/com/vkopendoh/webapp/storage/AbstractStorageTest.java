@@ -1,5 +1,6 @@
 package com.vkopendoh.webapp.storage;
 
+import com.vkopendoh.webapp.Config;
 import com.vkopendoh.webapp.ResumeTestData;
 import com.vkopendoh.webapp.exception.ExistStorageException;
 import com.vkopendoh.webapp.exception.NotExistStorageException;
@@ -13,8 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-    protected static final String STORAGE_DIR = "storage";
-
+    protected static final String STORAGE_DIR = Config.get().getStorageDir(); //
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
