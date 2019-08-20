@@ -2,13 +2,7 @@ package com.vkopendoh.webapp;
 
 import com.vkopendoh.webapp.model.*;
 
-import java.awt.*;
-import java.io.Serializable;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 public class ResumeTestData {
@@ -45,7 +39,7 @@ public class ResumeTestData {
 
     public static Resume createResume(String uuid, String name) {
         Resume resume = new Resume(uuid, name);
-       /* Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+        Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
         contacts.put(ContactType.PHONE, "+7(921) 855-0482");
         contacts.put(ContactType.SKYPE, "grigory.kislin");
         contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
@@ -54,7 +48,7 @@ public class ResumeTestData {
         contacts.put(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
         contacts.put(ContactType.HOMEPAGE, "Домашняя страница");
 
-        TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
+       /* TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
 
         TextSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
 
@@ -141,7 +135,7 @@ public class ResumeTestData {
         educationList.add(edu6);
         OrganizationSection education = new OrganizationSection(educationList);
 
-        resume.setContacts(contacts);
+
         Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
         sections.put(SectionType.OBJECTIVE, objective);
         sections.put(SectionType.ACHIEVEMENT, achievment);
@@ -150,6 +144,7 @@ public class ResumeTestData {
         sections.put(SectionType.PERSONAL, personal);
         sections.put(SectionType.QUALIFICATIONS, qualifications);
         resume.setSections(sections);*/
+        resume.setContacts(contacts);
         return resume;
     }
 

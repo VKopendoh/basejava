@@ -4,13 +4,12 @@ import java.io.*;
 import java.util.Properties;
 
 public class Config {
-    protected static final File PROPS = new File("config\\resumes.properties");
+    private static final File PROPS = new File("config\\resumes.properties");
     private static final Config INSTANCE = new Config();
-    private Properties properties = new Properties();
-    private String storageDir;
-    private String dbUrl;
-    private String dbUser;
-    private String dbPassword;
+    private final String storageDir;
+    private final String dbUrl;
+    private final String dbUser;
+    private final String dbPassword;
 
     public static Config get() {
         return INSTANCE;
@@ -18,6 +17,7 @@ public class Config {
 
     private Config() {
         try (InputStream is = new FileInputStream(PROPS)) {
+            Properties properties = new Properties();
             properties.load(is);
             storageDir = properties.getProperty("storage.dir");
             dbUrl = properties.getProperty("db.url");

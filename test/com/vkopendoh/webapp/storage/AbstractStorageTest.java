@@ -12,13 +12,14 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractStorageTest {
     protected static final String STORAGE_DIR = Config.get().getStorageDir(); //
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String DUMMY = "dummy";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String DUMMY = UUID.randomUUID().toString();
     private static final String FULL_NAME_1 = "name1";
     private static final Resume RESUME_1 = ResumeTestData.createResume(UUID_1, FULL_NAME_1);
     private static final Resume RESUME_2 = ResumeTestData.createResume(UUID_2, "name2");
@@ -63,7 +64,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = new Resume(UUID_1, FULL_NAME_1);
+        Resume resume = ResumeTestData.createResume(UUID_1, FULL_NAME_1);
         storage.update(resume);
         Assert.assertTrue(resume.equals(storage.get(UUID_1)));
     }
@@ -100,7 +101,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() {
         List<Resume> resumes = storage.getAllSorted();
-        Assert.assertEquals(new ArrayList<Resume>(Arrays.asList(RESUME_1, RESUME_2, RESUME_3)), resumes);
+        Assert.assertEquals(new ArrayList<>(Arrays.asList(RESUME_1, RESUME_2, RESUME_3)), resumes);
         Assert.assertEquals(3, resumes.size());
     }
 }
