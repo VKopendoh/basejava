@@ -147,5 +147,15 @@ public class ResumeTestData {
         resume.setContacts(contacts);
         return resume;
     }
+    public static Resume createResume2(String uuid, String name) {
+        Resume resume = new Resume(uuid, name);
+        Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+        contacts.put(ContactType.SKYPE, "kislin");
+        contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
+        contacts.put(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
+        contacts.put(ContactType.HOMEPAGE, " страница");
+        resume.setContacts(contacts);
+        return resume;
+    }
 
 }

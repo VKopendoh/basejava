@@ -16,10 +16,10 @@ import java.util.UUID;
 
 public abstract class AbstractStorageTest {
     protected static final String STORAGE_DIR = Config.get().getStorageDir(); //
-    private static final String UUID_1 = UUID.randomUUID().toString();
-    private static final String UUID_2 = UUID.randomUUID().toString();
-    private static final String UUID_3 = UUID.randomUUID().toString();
-    private static final String DUMMY = UUID.randomUUID().toString();
+    private static final String UUID_1 = "59875c7d-d733-43f1-9665-d6558759742e";
+    private static final String UUID_2 = "f8bc677b-b619-4d7e-bbde-69d991c2a98b";
+    private static final String UUID_3 = "2b442e15-4a75-4b75-be31-7ad3462898f5";
+    private static final String DUMMY = "3b69b8c1-c9a8-4a93-9a88-94c7cd554691";
     private static final String FULL_NAME_1 = "name1";
     private static final Resume RESUME_1 = ResumeTestData.createResume(UUID_1, FULL_NAME_1);
     private static final Resume RESUME_2 = ResumeTestData.createResume(UUID_2, "name2");
@@ -64,7 +64,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = ResumeTestData.createResume(UUID_1, FULL_NAME_1);
+        Resume resume = ResumeTestData.createResume2(UUID_1, FULL_NAME_1);
         storage.update(resume);
         Assert.assertTrue(resume.equals(storage.get(UUID_1)));
     }

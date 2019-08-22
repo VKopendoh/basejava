@@ -8,21 +8,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SqlHelper {
-    private ConnectionFactory connectionFactory;
+    private final ConnectionFactory connectionFactory;
 
     public SqlHelper(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
 
-    public <T> T execute(String sql, SqlExecute<T> sqlExecute) {
-        try (
-                Connection connection = connectionFactory.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
-            return sqlExecute.execute(ps);
+    public void execute(String sql) {
+        execute(sql, PreparedStatement::execute);
+    }
 
-        } catch (
-                SQLException e) {
-            throw new StorageException(e);
+    public <T> T execute(String sql, SqlExecute<T> executor) {
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY)) {
+            return executor.execute(ps);
+        } catch (SQLException e) {
+            throw ExceptionUtil.convertException(e);
         }
     }
 
