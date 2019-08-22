@@ -1,6 +1,7 @@
 package com.vkopendoh.webapp.storage;
 
 import com.vkopendoh.webapp.exception.NotExistStorageException;
+import com.vkopendoh.webapp.exception.StorageException;
 import com.vkopendoh.webapp.model.ContactType;
 import com.vkopendoh.webapp.model.Resume;
 import com.vkopendoh.webapp.sql.ConnectionFactory;
@@ -11,8 +12,6 @@ import java.util.*;
 
 public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
-    private static final int SAVE = 1;
-    private static final int UPDATE = 0;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         ConnectionFactory connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -30,12 +29,8 @@ public class SqlStorage implements Storage {
     @Override
     public void save(Resume resume) {
         sqlHelper.transactionalExecute(conn -> {
-                    setResumeToDb("INSERT INTO resume (full_name, uuid) " +
-                                    "       VALUES (?,?)",
-                            conn, resume);
-                    setContactsToDb("INSERT INTO contact (resume_uuid, type, value) " +
-                                    "         VALUES (?,?,?) ",
-                            conn, resume);
+                    setResumeToDb("INSERT INTO resume (full_name, uuid) VALUES (?,?)", conn, resume);
+                    setContactsToDb("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?) ", conn, resume);
                     return null;
                 }
         );
@@ -82,18 +77,12 @@ public class SqlStorage implements Storage {
     public void update(Resume resume) {
         Resume oldResume = this.get(resume.getUuid());
         sqlHelper.transactionalExecute(conn -> {
-                    setResumeToDb("" +
-                                    "       UPDATE resume " +
-                                    "          SET full_name =? " +
-                                    "        WHERE uuid =?",
-                            conn, resume);
+                    setResumeToDb("UPDATE resume SET full_name =? WHERE uuid =?", conn, resume);
                     setContactsToDb("" +
                                     "    INSERT INTO contact (resume_uuid, type, value) " +
                                     "        VALUES (?,?,?) " +
                                     "   ON CONFLICT (resume_uuid, type)" +
-                                    " DO UPDATE SET value = ?;",
-                            conn, resume);
-
+                                    " DO UPDATE SET value = ?;", conn, resume);
                     Set<String> existedContacts = new HashSet<>();
                     Set<String> contactsToDelete = new HashSet<>();
                     resume.getContacts().entrySet().forEach(e -> existedContacts.add(e.getKey().name()));
@@ -149,11 +138,10 @@ public class SqlStorage implements Storage {
         });
     }
 
-    private void setResumeToDb(String sql, Connection conn, Resume resume) throws SQLException {
+    private void setResumeToDb(String sql, Connection conn, Resume resume) throws SQLException, StorageException {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, resume.getFullName());
             ps.setString(2, resume.getUuid());
-            ps.execute();
             if (ps.executeUpdate() == 0) {
                 throw new NotExistStorageException(resume.getUuid());
             }
