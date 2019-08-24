@@ -8,7 +8,9 @@ import com.vkopendoh.webapp.sql.ConnectionFactory;
 import com.vkopendoh.webapp.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
@@ -75,26 +77,15 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        Resume oldResume = this.get(resume.getUuid());
         sqlHelper.transactionalExecute(conn -> {
                     setResumeToDb("UPDATE resume SET full_name =? WHERE uuid =?", conn, resume);
-                    setContactsToDb("" +
-                                    "    INSERT INTO contact (resume_uuid, type, value) " +
-                                    "        VALUES (?,?,?) " +
-                                    "   ON CONFLICT (resume_uuid, type)" +
-                                    " DO UPDATE SET value = ?;", conn, resume);
-                    Set<String> existedContacts = new HashSet<>();
-                    Set<String> contactsToDelete = new HashSet<>();
-                    resume.getContacts().entrySet().forEach(e -> existedContacts.add(e.getKey().name()));
-                    oldResume.getContacts().entrySet().forEach(e -> contactsToDelete.add(e.getKey().name()));
-                    contactsToDelete.removeAll(existedContacts);
-                    for (String contact : contactsToDelete) {
-                        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE type =?")) {
-                            ps.setString(1, contact);
-                            ps.execute();
-                        }
-
+                    try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid =?")) {
+                        ps.setString(1, resume.getUuid());
+                        ps.execute();
                     }
+                    setContactsToDb("" +
+                            "    INSERT INTO contact (resume_uuid, type, value) " +
+                            "        VALUES (?,?,?); ", conn, resume);
                     return null;
                 }
         );
@@ -142,9 +133,7 @@ public class SqlStorage implements Storage {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, resume.getFullName());
             ps.setString(2, resume.getUuid());
-            if (ps.executeUpdate() == 0) {
-                throw new NotExistStorageException(resume.getUuid());
-            }
+            ps.execute();
         }
     }
 
@@ -154,9 +143,6 @@ public class SqlStorage implements Storage {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
                 ps.setString(3, e.getValue());
-                if (ps.getParameterMetaData().getParameterCount() > 3) {
-                    ps.setString(4, e.getValue());
-                }
                 ps.addBatch();
             }
             ps.executeBatch();
