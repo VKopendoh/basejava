@@ -1,7 +1,6 @@
 package com.vkopendoh.webapp.storage;
 
 import com.vkopendoh.webapp.exception.NotExistStorageException;
-import com.vkopendoh.webapp.exception.StorageException;
 import com.vkopendoh.webapp.model.ContactType;
 import com.vkopendoh.webapp.model.Resume;
 import com.vkopendoh.webapp.sql.ConnectionFactory;
@@ -31,7 +30,11 @@ public class SqlStorage implements Storage {
     @Override
     public void save(Resume resume) {
         sqlHelper.transactionalExecute(conn -> {
-                    setResumeToDb("INSERT INTO resume (full_name, uuid) VALUES (?,?)", conn, resume);
+                    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (full_name, uuid) VALUES (?,?)")) {
+                        ps.setString(1, resume.getFullName());
+                        ps.setString(2, resume.getUuid());
+                        ps.execute();
+                    }
                     setContactsToDb("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?) ", conn, resume);
                     return null;
                 }
@@ -78,7 +81,13 @@ public class SqlStorage implements Storage {
     @Override
     public void update(Resume resume) {
         sqlHelper.transactionalExecute(conn -> {
-                    setResumeToDb("UPDATE resume SET full_name =? WHERE uuid =?", conn, resume);
+                    try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name =? WHERE uuid =?")) {
+                        ps.setString(1, resume.getFullName());
+                        ps.setString(2, resume.getUuid());
+                        if (ps.executeUpdate() == 0) {
+                            throw new NotExistStorageException(resume.getUuid());
+                        }
+                    }
                     try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid =?")) {
                         ps.setString(1, resume.getUuid());
                         ps.execute();
@@ -127,14 +136,6 @@ public class SqlStorage implements Storage {
             }
             return rs.getInt(1);
         });
-    }
-
-    private void setResumeToDb(String sql, Connection conn, Resume resume) throws SQLException, StorageException {
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, resume.getFullName());
-            ps.setString(2, resume.getUuid());
-            ps.execute();
-        }
     }
 
     private void setContactsToDb(String sql, Connection conn, Resume resume) throws SQLException {
