@@ -2,7 +2,11 @@ package com.vkopendoh.webapp;
 
 import com.vkopendoh.webapp.model.*;
 
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 public class ResumeTestData {
@@ -48,7 +52,7 @@ public class ResumeTestData {
         contacts.put(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
         contacts.put(ContactType.HOMEPAGE, "Домашняя страница");
 
-       /* TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
+       TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
 
         TextSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
 
@@ -62,15 +66,15 @@ public class ResumeTestData {
         TextListSection achievment = new TextListSection(achievmentsList);
 
         List<String> qualificationsList = new ArrayList<>();
-        qualificationsList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
-        qualificationsList.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
-        qualificationsList.add("Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.");
-        qualificationsList.add("Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.");
-        qualificationsList.add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
-        qualificationsList.add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.\n");
+        qualificationsList.add("1. Квалификация!С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
+        qualificationsList.add("2. Квалификация! Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
+        qualificationsList.add("3. Квалификация! Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.");
+        qualificationsList.add("4. Квалификация! Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.");
+        qualificationsList.add("5. Квалификация! Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
+        qualificationsList.add("6. Квалификация! Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
         TextListSection qualifications = new TextListSection(qualificationsList);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+        /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
         Organization exp1 = new Organization("Java Online Projects", null,
                 new Organization.Experience(YearMonth.parse("10/2013", formatter), YearMonth.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
 
@@ -134,19 +138,20 @@ public class ResumeTestData {
         educationList.add(edu5);
         educationList.add(edu6);
         OrganizationSection education = new OrganizationSection(educationList);
-
+*/
 
         Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
         sections.put(SectionType.OBJECTIVE, objective);
         sections.put(SectionType.ACHIEVEMENT, achievment);
-        sections.put(SectionType.EDUCATION, education);
-        sections.put(SectionType.EXPERIENCE, experience);
+        //sections.put(SectionType.EDUCATION, education);
+        //sections.put(SectionType.EXPERIENCE, experience);
         sections.put(SectionType.PERSONAL, personal);
         sections.put(SectionType.QUALIFICATIONS, qualifications);
-        resume.setSections(sections);*/
+        resume.setSections(sections);
         resume.setContacts(contacts);
         return resume;
     }
+
     public static Resume createResume2(String uuid, String name) {
         Resume resume = new Resume(uuid, name);
         Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
@@ -154,6 +159,29 @@ public class ResumeTestData {
         contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
         contacts.put(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
         contacts.put(ContactType.HOMEPAGE, " страница");
+        TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
+
+        TextSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
+
+        List<String> achievmentsList = new ArrayList<>();
+        achievmentsList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
+        achievmentsList.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
+        achievmentsList.add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
+        achievmentsList.add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
+        TextListSection achievment = new TextListSection(achievmentsList);
+
+        List<String> qualificationsList = new ArrayList<>();
+        qualificationsList.add("1. Квалификация!С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
+        qualificationsList.add("3. Квалификация! Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.");
+        qualificationsList.add("5. Квалификация! Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
+        TextListSection qualifications = new TextListSection(qualificationsList);
+
+        Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+        sections.put(SectionType.OBJECTIVE, objective);
+        sections.put(SectionType.ACHIEVEMENT, achievment);
+        sections.put(SectionType.PERSONAL, personal);
+        sections.put(SectionType.QUALIFICATIONS, qualifications);
+        resume.setSections(sections);
         resume.setContacts(contacts);
         return resume;
     }
