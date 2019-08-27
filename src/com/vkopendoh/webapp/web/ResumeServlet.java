@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ResumeServlet extends HttpServlet {
+    Storage storage;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -20,13 +22,9 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
+
         String uuid = request.getParameter("uuid");
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Storage storage = Config.get().getStorage();
+        storage = Config.get().getStorage();
         StringBuilder writer = new StringBuilder(" <table border=\"1\">");
         writer.append(addTableRowWithData("Full Name", "UUID"));
         if (uuid != null) {
