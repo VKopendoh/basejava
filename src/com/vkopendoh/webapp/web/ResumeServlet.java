@@ -12,38 +12,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ResumeServlet extends HttpServlet {
-    Storage storage;
+    Storage storage = Config.get().getStorage();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-
-        String uuid = request.getParameter("uuid");
-        storage = Config.get().getStorage();
-        StringBuilder writer = new StringBuilder(" <table border=\"1\">");
-        writer.append(addTableRowWithData("Full Name", "UUID"));
-        if (uuid != null) {
-            Resume resume = storage.get(uuid);
-            writer.append(addTableRowWithData(resume.getFullName(), resume.getUuid()));
-        } else {
-            ArrayList<Resume> resumes = (ArrayList<Resume>) storage.getAllSorted();
-            for (Resume resume : resumes) {
-                writer.append(addTableRowWithData(resume.getFullName(), resume.getUuid()));
-            }
-        }
-        writer.append(" </table>");
-        response.getWriter().write(writer.toString());
-
-    }
-
-    private String addTableRowWithData(String fullName, String uuid) {
-        return "<tr>" +
-                "<td>" + fullName + "</td>" +
-                "<td>" + uuid + "</td>";
+        request.setAttribute("resumes", storage.getAllSorted());
+        request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request,response);
     }
 }

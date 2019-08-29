@@ -1,11 +1,18 @@
 package com.vkopendoh.webapp.storage;
 
 import com.vkopendoh.webapp.exception.NotExistStorageException;
-import com.vkopendoh.webapp.model.*;
+import com.vkopendoh.webapp.model.ContactType;
+import com.vkopendoh.webapp.model.Resume;
+import com.vkopendoh.webapp.model.Section;
+import com.vkopendoh.webapp.model.SectionType;
 import com.vkopendoh.webapp.sql.SqlHelper;
+import com.vkopendoh.webapp.util.JsonParser;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
@@ -69,8 +76,7 @@ public class SqlStorage implements Storage {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    SectionType type = SectionType.valueOf(rs.getString("type"));
-                    resume.addSection(type, getSection(type, rs));
+                    addSection(rs, resume);
                 }
             }
             return resume;
@@ -138,9 +144,8 @@ public class SqlStorage implements Storage {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     String uuid = rs.getString("resume_uuid");
-                    SectionType type = SectionType.valueOf(rs.getString("type"));
-                    sortedMap.get(uuid).addSection(type,
-                            getSection(type, rs));
+                    Resume resume = sortedMap.get(uuid);
+                    addSection(rs, resume);
                 }
             }
             return new ArrayList<>(sortedMap.values());
@@ -174,39 +179,20 @@ public class SqlStorage implements Storage {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid,type,content) VALUES (?,?,?) ")) {
             for (Map.Entry<SectionType, Section> e : resume.getSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
-                SectionType type = e.getKey();
-                ps.setString(2, type.name());
-                switch (type) {
-                    case OBJECTIVE:
-                    case PERSONAL:
-                        TextSection textSection = (TextSection) e.getValue();
-                        ps.setString(3, textSection.getContent());
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        TextListSection textListSection = (TextListSection) e.getValue();
-                        ps.setString(3, String.join("\n", textListSection.getContent()));
-                        break;
-                }
+                ps.setString(2, e.getKey().name());
+                Section section = e.getValue();
+                ps.setString(3, JsonParser.write(section, Section.class));
                 ps.addBatch();
             }
             ps.executeBatch();
         }
     }
 
-    private Section getSection(SectionType type, ResultSet rs) throws SQLException {
-        Section section = null;
-        switch (type) {
-            case PERSONAL:
-            case OBJECTIVE:
-                section = new TextSection(rs.getString("content"));
-                break;
-            case ACHIEVEMENT:
-            case QUALIFICATIONS:
-                String[] strings = rs.getString("content").split("\n");
-                section = new TextListSection(Arrays.asList(strings));
-                break;
+    private void addSection(ResultSet rs, Resume r) throws SQLException {
+        String content = rs.getString("content");
+        if (content != null) {
+            SectionType type = SectionType.valueOf(rs.getString("type"));
+            r.addSection(type, JsonParser.read(content, Section.class));
         }
-        return section;
     }
 }

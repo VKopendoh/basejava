@@ -74,7 +74,7 @@ public class ResumeTestData {
         qualificationsList.add("6. Квалификация! Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
         TextListSection qualifications = new TextListSection(qualificationsList);
 
-        /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
         Organization exp1 = new Organization("Java Online Projects", null,
                 new Organization.Experience(YearMonth.parse("10/2013", formatter), YearMonth.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
 
@@ -138,7 +138,7 @@ public class ResumeTestData {
         educationList.add(edu5);
         educationList.add(edu6);
         OrganizationSection education = new OrganizationSection(educationList);
-*/
+
 
         Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
         sections.put(SectionType.OBJECTIVE, objective);
