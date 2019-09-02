@@ -1,7 +1,8 @@
-<%@ page import="com.vkopendoh.webapp.model.Resume" %>
-<%@ page import="java.util.List" %>
 <%@ page import="com.vkopendoh.webapp.model.ContactType" %>
+<%@ page import="com.vkopendoh.webapp.model.Resume" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -11,6 +12,8 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
+    <a href="resume?uuid=<%=new Resume("").getUuid()%>&action=edit">Создать новое резюме</a>
+    <hr>
     <table border="1" cellpadding="8" cellspacing="0">
         <tr>
             <th>Имя</th>
@@ -18,19 +21,18 @@
             <th></th>
             <th></th>
         </tr>
-        <%
-            for (Resume resume : (List<Resume>) request.getAttribute("resumes")) {
-        %>
-        <tr>
-            <td><a href="resume?uuid=<%=resume.getUuid()%>"><%=resume.getFullName()%></a>
-            </td>
-            <td><%=resume.getContact(ContactType.EMAIL)%>
-            </td>
-        </tr>
-        <%
-            }
-        %>
+        <c:forEach items="${resumes}" var="resume">
+            <jsp:useBean id="resume" type="com.vkopendoh.webapp.model.Resume"/>
+            <tr>
+                <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
+                <td><%=ContactType.EMAIL.toHtml(resume.getContact(ContactType.EMAIL))%>
+                </td>
+                <td><a href="resume?uuid=${resume.uuid}&action=delete">Удалить</a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=edit">Редактировать</a></td>
+            </tr>
+        </c:forEach>
     </table>
+
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
