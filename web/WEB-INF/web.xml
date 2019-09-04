@@ -4,11 +4,19 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
     <servlet>
-        <servlet-name>resumeServlet</servlet-name>
-        <servlet-class>com.vkopendoh.webapp.web.ResumeServlet</servlet-class>
-    </servlet>
+    <servlet-name>resumeServlet</servlet-name>
+    <servlet-class>com.vkopendoh.webapp.web.ResumeServlet</servlet-class>
+</servlet>
     <servlet-mapping>
         <servlet-name>resumeServlet</servlet-name>
         <url-pattern>/resume</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>createResumeServlet</servlet-name>
+        <servlet-class>com.vkopendoh.webapp.web.CreateResumeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>createResumeServlet</servlet-name>
+        <url-pattern>/create</url-pattern>
     </servlet-mapping>
 </web-app>

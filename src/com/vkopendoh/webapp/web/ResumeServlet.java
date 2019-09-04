@@ -1,7 +1,6 @@
 package com.vkopendoh.webapp.web;
 
 import com.vkopendoh.webapp.Config;
-import com.vkopendoh.webapp.exception.NotExistStorageException;
 import com.vkopendoh.webapp.model.*;
 import com.vkopendoh.webapp.storage.Storage;
 
@@ -20,8 +19,12 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
+        if ("save".equals(request.getParameter("operation"))) {
+            storage.save(new Resume(uuid, fullName));
+        }
         Resume r = storage.get(uuid);
         r.setFullName(fullName);
+
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (value != null && value.trim().length() != 0) {
@@ -37,7 +40,6 @@ public class ResumeServlet extends HttpServlet {
                 case OBJECTIVE:
                     String value = request.getParameter(type.name());
                     if (value != null && value.trim().length() != 0) {
-
                         r.addSection(type, new TextSection(value));
                     } else {
                         r.getSections().remove(type);
@@ -46,15 +48,17 @@ public class ResumeServlet extends HttpServlet {
                 case QUALIFICATIONS:
                     String[] content = request.getParameterValues(type.name());
                     List<String> newContent = new ArrayList<>();
-                    for (String text : content) {
-                        if (text != null && text.trim().length() != 0) {
-                            newContent.add(text);
+                    if (content != null) {
+                        for (String text : content) {
+                            if (text != null && text.trim().length() != 0) {
+                                newContent.add(text);
+                            }
                         }
-                    }
-                    if (newContent != null) {
-                        r.addSection(type, new TextListSection(newContent));
-                    } else {
-                        r.getSections().remove(type);
+                        if (!newContent.isEmpty()) {
+                            r.addSection(type, new TextListSection(newContent));
+                        } else {
+                            r.getSections().remove(type);
+                        }
                     }
             }
         }
@@ -78,13 +82,7 @@ public class ResumeServlet extends HttpServlet {
                 return;
             case "view":
             case "edit":
-                try {
-                    r = storage.get(uuid);
-                } catch (NotExistStorageException e) {
-                    storage.save(new Resume(uuid, ""));
-                    r = storage.get(uuid);
-                }
-
+                r = storage.get(uuid);
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
