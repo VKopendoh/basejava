@@ -81,16 +81,16 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     @Override
     public String toString() {
-        TextSection ts1 = (TextSection) sections.get(SectionType.PERSONAL);
+       /* TextSection ts1 = (TextSection) sections.get(SectionType.PERSONAL);
         TextSection ts2 = (TextSection) sections.get(SectionType.OBJECTIVE);
         TextListSection tl1 = (TextListSection) sections.get(SectionType.ACHIEVEMENT);
-        TextListSection tl2 = (TextListSection) sections.get(SectionType.QUALIFICATIONS);
+        TextListSection tl2 = (TextListSection) sections.get(SectionType.QUALIFICATIONS);*/
 
         return uuid +
-                " | " + fullName +
+                " | " + fullName; /* +
                 " | " + contacts.get(ContactType.PHONE) +
                 " | " + contacts.get(ContactType.HOMEPAGE);
-              /*  " | " + ts1.getContent() +
+               " | " + ts1.getContent() +
                 " | " + ts2.getContent() +
                 " | " + tl1.getContent() +
                 " | " + tl2.getContent()*/

@@ -12,9 +12,7 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <form action="create" method="post" enctype="application/x-www-form-urlencoded">
-        <button type="submit" name="button" value="create">Новое резюме</button>
-    </form>
+    <a href="resume?action=create">Создать новое резюме</a>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">
         <tr>

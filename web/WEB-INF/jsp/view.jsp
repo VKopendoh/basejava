@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/style.css">
     <jsp:useBean id="resume" type="com.vkopendoh.webapp.model.Resume" scope="request"/>
-    <title>Рузюме ${resume.fullName}</title>
+    <title>Резюме ${resume.fullName}</title>
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
@@ -40,9 +40,6 @@
                     </c:forEach>
                 </p>
             </c:when>
-            <c:otherwise>
-                NOOOOOOOOOOOOOOOO
-            </c:otherwise>
         </c:choose>
 
     </c:forEach>

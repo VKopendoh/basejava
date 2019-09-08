@@ -19,11 +19,9 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        if ("save".equals(request.getParameter("operation"))) {
-            storage.save(new Resume(uuid, fullName));
-        }
-        Resume r = storage.get(uuid);
-        r.setFullName(fullName);
+        List<Resume> resumes = (List<Resume>) request.getSession().getAttribute("resumes");
+
+        Resume r = new Resume(uuid, fullName);
 
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
@@ -40,10 +38,11 @@ public class ResumeServlet extends HttpServlet {
                 case OBJECTIVE:
                     String value = request.getParameter(type.name());
                     if (value != null && value.trim().length() != 0) {
-                        r.addSection(type, new TextSection(value));
+                        r.addSection(type, new TextSection(value.trim()));
                     } else {
                         r.getSections().remove(type);
                     }
+                    break;
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
                     String[] content = request.getParameterValues(type.name());
@@ -54,15 +53,18 @@ public class ResumeServlet extends HttpServlet {
                                 newContent.add(text);
                             }
                         }
-                        if (!newContent.isEmpty()) {
-                            r.addSection(type, new TextListSection(newContent));
-                        } else {
-                            r.getSections().remove(type);
-                        }
+                        r.addSection(type, new TextListSection(newContent));
+                    } else {
+                        r.getSections().remove(type);
                     }
+                    break;
             }
         }
-        storage.update(r);
+        if (resumes.stream().noneMatch(resume -> resume.getUuid().equals(uuid))) {
+            storage.save(r);
+        } else {
+            storage.update(r);
+        }
         response.sendRedirect("resume");
     }
 
@@ -70,7 +72,7 @@ public class ResumeServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
         if (action == null) {
-            request.setAttribute("resumes", storage.getAllSorted());
+            request.getSession().setAttribute("resumes", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
             return;
         }
@@ -83,6 +85,9 @@ public class ResumeServlet extends HttpServlet {
             case "view":
             case "edit":
                 r = storage.get(uuid);
+                break;
+            case "create":
+                r = new Resume("");
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");

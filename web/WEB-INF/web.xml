@@ -11,12 +11,4 @@
         <servlet-name>resumeServlet</servlet-name>
         <url-pattern>/resume</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>createResumeServlet</servlet-name>
-        <servlet-class>com.vkopendoh.webapp.web.CreateResumeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>createResumeServlet</servlet-name>
-        <url-pattern>/create</url-pattern>
-    </servlet-mapping>
 </web-app>
