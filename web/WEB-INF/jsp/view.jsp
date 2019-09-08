@@ -36,7 +36,8 @@
                 <h3>${sectionType.title}</h3>
                 <p>
                     <c:forEach var="text" items="${sectionEntry.value.content}">
-                        ${text} <br>
+                        ${text}
+                        <br><br>
                     </c:forEach>
                 </p>
             </c:when>

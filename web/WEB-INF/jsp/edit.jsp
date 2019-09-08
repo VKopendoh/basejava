@@ -13,9 +13,9 @@
     <script type="text/javascript">
         function add(stype) {
             var dd = document.createElement("dd");
-            var element = document.createElement("input");
-            element.setAttribute("type", "text");
-            element.setAttribute("size", "150");
+            var element = document.createElement("textarea");
+            element.setAttribute("rows", "3");
+            element.setAttribute("cols", "150");
             element.setAttribute("name", stype);
             dd.appendChild(element);
             var targetTag = document.getElementById(stype);
@@ -52,7 +52,9 @@
                     </c:when>
                     <c:when test="${sectionType.name() == 'ACHIEVEMENT' || sectionType.name() =='QUALIFICATIONS'}">
                         <c:forEach var="content" items="${resume.getSection(sectionType).content}">
-                            <dd><input type="text" name="${sectionType.name()}" size=150 value="${content}"></dd>
+                        <dd><textarea name="${sectionType.name()}" cols="150" rows="3">${content}
+                                </textarea>
+                        </dd>
                         </c:forEach>
                         <br>
                         <input type="button" name="addField"
