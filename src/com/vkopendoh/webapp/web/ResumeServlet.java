@@ -38,7 +38,7 @@ public class ResumeServlet extends HttpServlet {
                 case OBJECTIVE:
                     String value = request.getParameter(type.name());
                     if (value != null && value.trim().length() != 0) {
-                        r.addSection(type, new TextSection(value.trim()));
+                        r.addSection(type, new TextSection(value));
                     } else {
                         r.getSections().remove(type);
                     }
