@@ -143,8 +143,8 @@ public class ResumeTestData {
         Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
         sections.put(SectionType.OBJECTIVE, objective);
         sections.put(SectionType.ACHIEVEMENT, achievment);
-        //sections.put(SectionType.EDUCATION, education);
-        //sections.put(SectionType.EXPERIENCE, experience);
+        sections.put(SectionType.EDUCATION, education);
+        sections.put(SectionType.EXPERIENCE, experience);
         sections.put(SectionType.PERSONAL, personal);
         sections.put(SectionType.QUALIFICATIONS, qualifications);
         resume.setSections(sections);

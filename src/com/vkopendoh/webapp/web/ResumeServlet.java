@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ResumeServlet extends HttpServlet {
     Storage storage = Config.get().getStorage();
@@ -19,7 +20,6 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        List<Resume> resumes = (List<Resume>) request.getSession().getAttribute("resumes");
 
         Resume r = new Resume(uuid, fullName);
 
@@ -45,7 +45,7 @@ public class ResumeServlet extends HttpServlet {
                     break;
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
-                    String[] content = request.getParameterValues(type.name());
+                    String[] content = request.getParameter(type.name()).split("\r\n");
                     List<String> newContent = new ArrayList<>();
                     if (content != null) {
                         for (String text : content) {
@@ -58,9 +58,13 @@ public class ResumeServlet extends HttpServlet {
                         r.getSections().remove(type);
                     }
                     break;
+                case EDUCATION:
+                case EXPERIENCE:
+
             }
         }
-        if (resumes.stream().noneMatch(resume -> resume.getUuid().equals(uuid))) {
+        if (uuid.isEmpty()) {
+            r.setUuid(UUID.randomUUID().toString());
             storage.save(r);
         } else {
             storage.update(r);
@@ -72,7 +76,7 @@ public class ResumeServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
         if (action == null) {
-            request.getSession().setAttribute("resumes", storage.getAllSorted());
+            request.setAttribute("resumes", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
             return;
         }
@@ -87,7 +91,7 @@ public class ResumeServlet extends HttpServlet {
                 r = storage.get(uuid);
                 break;
             case "create":
-                r = new Resume("");
+                r = new Resume();
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
