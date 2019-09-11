@@ -17,15 +17,57 @@
         }
         function add(stype) {
             var dd = document.createElement("dd");
-            var element = document.createElement("textarea");
-            element.setAttribute("rows", "3");
-            element.setAttribute("cols", "150");
-            element.setAttribute("name", stype);
-            dd.appendChild(element);
+            var inputName = document.createElement("input");
+            var inputTxtPos = document.createElement("input");
+            var inputUrl = document.createElement("input");
+            var startDate = document.createElement("input");
+            var endDate = document.createElement("input");
+            var br = document.createElement("BR");
+            var description = document.createElement("textarea");
+            var nameTxt = document.createTextNode("Название организации: ");
+            var urlTxt = document.createTextNode("Ссылка на домашнюю страницу организации: ");
+            var dash = document.createTextNode(" - ");
+            var posTxt = document.createTextNode("Позиция: ");
+            var descTxt = document.createTextNode("Описание: ");
+            description.setAttribute("name",stype+"."+"description");
+            inputName.setAttribute("type","text");
+            inputName.setAttribute("name",stype+"."+"orgName");
+            inputUrl.setAttribute("type","url");
+            inputUrl.setAttribute("name",stype+"."+"orgUrl");
+            inputTxtPos.setAttribute("type","text");
+            inputTxtPos.setAttribute("name", stype+"."+"position");
+            startDate.setAttribute("type","month");
+            startDate.setAttribute("name",stype+"."+"startDate");
+            endDate.setAttribute("type","month");
+            endDate.setAttribute("name",stype+"."+"endDate");
+            description.setAttribute("cols", "150");
+            description.setAttribute("onclick", "textAreaAdjust(this)");
+            dd.appendChild(nameTxt);
+            dd.appendChild(inputName);
+            dd.appendChild(br);
+            dd.appendChild(br.cloneNode());
+            dd.appendChild(urlTxt);
+            dd.appendChild(inputUrl);
+            dd.appendChild(br.cloneNode());
+            dd.appendChild(br.cloneNode());
+            dd.appendChild(startDate);
+            dd.appendChild(dash);
+            dd.appendChild(endDate);
+            dd.appendChild(br.cloneNode());
+            dd.appendChild(br.cloneNode());
+            dd.appendChild(posTxt);
+            dd.appendChild(inputTxtPos);
+            dd.appendChild(br.cloneNode());
+            dd.appendChild(br.cloneNode());
+            dd.appendChild(descTxt);
+            dd.appendChild(description);
+            dd.appendChild(br.cloneNode());
+            dd.appendChild(br.cloneNode());
             var targetTag = document.getElementById(stype);
             targetTag.appendChild(dd);
         }
     </script>
+
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
@@ -61,32 +103,28 @@
                         <br>
                     </c:when>
                     <c:when test="${sectionType.name() == 'EXPERIENCE' || sectionType.name() == 'EDUCATION'}">
-
-                        <p>
-
+                      <dd>
                         <c:forEach var="organization" items="${resume.getSection(sectionType).getContent()}">
                             Наименование организации:
-                            <input type="text" name="${organization.homePage.name}" size="50" value="${organization.homePage.name}">
+                            <input type="text" name="${sectionType}.orgName" size="50" value="${organization.homePage.name}">
+                            <br><br>
                             Ссылка на домашнюю страницу организации:
-                            <input type="url" name="${organization.homePage.url}" size="50" value="${organization.homePage.url}">
+                            <input type="url" name="${sectionType}.orgUrl" size="50" value="${organization.homePage.url}">
                             <br><br>
                             <c:forEach var="exp" items="${organization.experiences}">
-                                <table border="0" cellpadding="8" cellspacing="0">
-                                    <tr>
-                                        <td><input type="month" name="${exp.startDate}" value="${exp.startDate}"> &mdash; <input type="month" name="${exp.endDate}" value="${exp.endDate}"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Позиция: <input type="text" name="${exp.title}" size="50" value="${exp.title}"></td>
-                                        <td>Описание: <textarea name="${exp.description}" onclick="textAreaAdjust(this)" cols="150">${exp.description}</textarea></td>
-                                    </tr>
-                                </table>
+                                <input type="month" name="${sectionType}.startDate" value="${exp.startDate}"> &mdash;
+                                <input type="month" name="${sectionType}.endDate" value="${exp.endDate}">
+                                <br><br>
+                                Позиция: <input type="text" name="${sectionType}.position" size="50" value="${exp.title}">
+                                <br><br>
+                                Описание:<input type="text" name="${sectionType}.description" size="150" value="${exp.description}">
                                 <hr>
 
                             </c:forEach>
 
                         </c:forEach>
-                        </p>
-                        <br>
+                        </dd>
+                        <br><br>
                         <input type="button" name="addField"
                                value="Добавить" onclick="add('${sectionType.name()}');">
                     </c:when>

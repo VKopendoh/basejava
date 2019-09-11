@@ -44,25 +44,19 @@
             <c:when test="${sectionType.name() == 'EXPERIENCE' || sectionType.name() == 'EDUCATION'}">
                 <h3>${sectionType.title}</h3>
                 <p>
-                    <c:forEach var="organization" items="${sectionEntry.value.content}">
-                        <a href="${organization.homePage.url}">${organization.homePage.name}</a>
+                <c:forEach var="organization" items="${sectionEntry.value.content}">
+                    <i>Наименование организации: </i>
+                    <a href="${organization.homePage.url}">${organization.homePage.name}</a>
+                    <br><br>
+                    <c:forEach var="exp" items="${organization.experiences}">
+                        ${exp.startDate} &mdash; ${exp.endDate}
                         <br><br>
-                        <c:forEach var="exp" items="${organization.experiences}">
-                            <table border="0" cellpadding="8" cellspacing="0">
-                                <tr>
-                                    <td>${exp.startDate} &mdash; ${exp.endDate}</td>
-                                </tr>
-                                <tr>
-                                    <td>${exp.title}</td>
-                                    <td>${exp.description}</td>
-                                </tr>
-
-                            </table>
-                            <hr>
-
-                        </c:forEach>
-
+                        <i>Позиция/Опыт: </i> ${exp.title}
+                        <br><br>
+                            <i>Описание: </i><br>${exp.description}
+                        <hr>
                     </c:forEach>
+                </c:forEach>
                 </p>
             </c:when>
         </c:choose>

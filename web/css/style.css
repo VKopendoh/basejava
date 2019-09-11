@@ -28,17 +28,3 @@ dd{
     margin-left: 8px;
     vertical-align: top;
 }
-
-table {
-    width: 100%;
-}
-
-
-tr td:first-child {
-    width: 0;
-    white-space: nowrap;
-}
-
-tr :last-child {
-    width: 100%;
-}
