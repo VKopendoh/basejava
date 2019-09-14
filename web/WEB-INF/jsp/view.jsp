@@ -20,19 +20,18 @@
         </c:forEach>
     </p>
     <p>
-    <h3>Секции: </h3>
     <c:forEach var="sectionEntry" items="${resume.sections}">
         <jsp:useBean id="sectionEntry"
                      type="java.util.Map.Entry<com.vkopendoh.webapp.model.SectionType, com.vkopendoh.webapp.model.Section>"/>
         <c:set var="sectionType" value="${sectionEntry.key}"/>
         <c:choose>
-            <c:when test="${sectionType.name() == 'PERSONAL' || sectionType.name() =='OBJECTIVE'}">
+            <c:when test="${(sectionType.name() == 'PERSONAL' || sectionType.name() =='OBJECTIVE') && sectionEntry.value.content.trim().length() != 0}">
                 <h3>${sectionType.title}</h3>
                 <p>
                         ${sectionEntry.value.content}
                 </p>
             </c:when>
-            <c:when test="${sectionType.name() == 'ACHIEVEMENT' || sectionType.name() =='QUALIFICATIONS'}">
+            <c:when test="${(sectionType.name() == 'ACHIEVEMENT' || sectionType.name() =='QUALIFICATIONS') && !sectionEntry.value.content.isEmpty()}">
                 <h3>${sectionType.title}</h3>
                 <p>
                     <c:forEach var="text" items="${sectionEntry.value.content}">
@@ -41,7 +40,7 @@
                     </c:forEach>
                 </p>
             </c:when>
-            <c:when test="${sectionType.name() == 'EXPERIENCE' || sectionType.name() == 'EDUCATION'}">
+            <c:when test="${(sectionType.name() == 'EXPERIENCE' || sectionType.name() == 'EDUCATION')&& !sectionEntry.value.content.isEmpty()}">
                 <h3>${sectionType.title}</h3>
                 <p>
                 <c:forEach var="organization" items="${sectionEntry.value.content}">
@@ -53,7 +52,7 @@
                         <br><br>
                         <i>Позиция/Опыт: </i> ${exp.title}
                         <br><br>
-                            <i>Описание: </i><br>${exp.description}
+                        <i>Описание: </i><br>${exp.description}
                         <hr>
                     </c:forEach>
                 </c:forEach>
